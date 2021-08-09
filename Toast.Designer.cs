@@ -278,6 +278,7 @@
             this.MaximizeBox = false;
             this.Name = "Toast";
             this.Text = "Toast Reminder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Toast_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
