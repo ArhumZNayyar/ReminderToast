@@ -20,3 +20,7 @@ obj/ReminderToast.csproj.nuget.cache
 obj/ReminderToast.csproj.nuget.g.props
 obj/ReminderToast.csproj.nuget.g.targets
 ReminderToast.csproj
+remind-icon.ico
+Resources/AppIcon.ico
+Resources/create-Button.ico
+Resources/remind-icon.png
