@@ -43,24 +43,28 @@ namespace ReminderToast
             //Get the time and other details
             alarmTime = timeControl.Value.ToString("HHmmss");
             aTime = long.Parse(alarmTime);
-            bool isRepeated = true;
-            if (String.IsNullOrEmpty(repeatBox.Text) || repeatBox.Text == "Never")
-            {
-                isRepeated = false;
-            }
+            long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
             alarmList.Add(new Alarms
             {
                 alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString("HH:mm:ss tt") + "]",
                 alarmTime = alarmTime,
+                alarmDate = DateTime.Today,
                 alarmDesc = descriptionBox.Text,
-                repeat = isRepeated,
-                repeatTime = repeatBox.Text
+                repeat = repeatCheckBox.Checked,
+                repeatTime = repeatBox.Text,
+                repeatDuration = duration
             });
             //Clear all fields
             toastNameBox.Clear();
             descriptionBox.Clear();
             timeControl.ResetText();
             repeatBox.ResetText();
+            repeatCheckBox.Checked = false;
+            everyLabel.Visible = false;
+            numericBox.ResetText();
+            numericBox.Visible = false;
+            repeatBox.ResetText();
+            repeatBox.Visible = false;
         }
 
         private void toastTimer_Tick(object sender, EventArgs e)
@@ -73,7 +77,7 @@ namespace ReminderToast
                     if (alarmList[i].alarmName == toastBox.Items[i].ToString())
                     {
                         aTime = long.Parse(alarmList[i].alarmTime);
-                        if (nTime >= aTime && (nTime < (aTime + 60)))
+                        if (DateTime.Today == alarmList[i].alarmDate && nTime >= aTime && (nTime < (aTime + 60)))
                         {
                             new ToastContentBuilder()
                              .AddText(alarmList[i].alarmName)
@@ -81,25 +85,69 @@ namespace ReminderToast
                              .Show();
                             if (alarmList[i].repeat == true)
                             {
-                                if (alarmList[i].repeatTime == "Every Hour")
+                                if (alarmList[i].repeatTime == "Second(s)")
                                 {
-                                    alarmList[i].alarmTime = DateTime.Now.AddHours(1).ToString("HHmmss");
+                                    alarmList[i].alarmTime = DateTime.Now.AddSeconds(alarmList[i].repeatDuration).ToString("HHmmss");
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
                                         splice = splice.Substring(0, spliceIndex);
-                                    splice = splice + " [" + DateTime.Now.AddHours(1).ToString("HH:mm:ss tt") + "]";
+                                    splice = splice + "[" + DateTime.Now.AddSeconds(alarmList[i].repeatDuration).ToString("HH:mm:ss tt") + "]";
                                     toastBox.Items[i] = splice;
                                     alarmList[i].alarmName = splice;
                                 }
-                                else if (alarmList[i].repeatTime == "Every Four Hours")
+                                else if (alarmList[i].repeatTime == "Minute(s)")
                                 {
-                                    alarmList[i].alarmTime = DateTime.Now.AddHours(4).ToString("HHmmss");
+                                    alarmList[i].alarmTime = DateTime.Now.AddMinutes(alarmList[i].repeatDuration).ToString("HHmmss");
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
                                         splice = splice.Substring(0, spliceIndex);
-                                    splice = splice + " [" + DateTime.Now.AddHours(4).ToString("HH:mm:ss tt") + "]";
+                                    splice = splice + "[" + DateTime.Now.AddMinutes(alarmList[i].repeatDuration).ToString("HH:mm:ss tt") + "]";
+                                    toastBox.Items[i] = splice;
+                                    alarmList[i].alarmName = splice;
+                                }
+                                else if (alarmList[i].repeatTime == "Hour(s)")
+                                {
+                                    alarmList[i].alarmTime = DateTime.Now.AddHours(alarmList[i].repeatDuration).ToString("HHmmss");
+                                    string splice = toastBox.Items[i].ToString();
+                                    int spliceIndex = splice.IndexOf("[");
+                                    if (spliceIndex >= 0)
+                                        splice = splice.Substring(0, spliceIndex);
+                                    splice = splice + "[" + DateTime.Now.AddHours(alarmList[i].repeatDuration).ToString("HH:mm:ss tt") + "]";
+                                    toastBox.Items[i] = splice;
+                                    alarmList[i].alarmName = splice;
+                                }
+                                else if (alarmList[i].repeatTime == "Day(s)")
+                                {
+                                    alarmList[i].alarmDate = alarmList[i].alarmDate.AddDays(alarmList[i].repeatDuration);
+                                    string splice = toastBox.Items[i].ToString();
+                                    int spliceIndex = splice.IndexOf("[");
+                                    if (spliceIndex >= 0)
+                                        splice = splice.Substring(0, spliceIndex);
+                                    splice = splice + "[" + DateTime.Now.AddDays(alarmList[i].repeatDuration).ToString() + "]";
+                                    toastBox.Items[i] = splice;
+                                    alarmList[i].alarmName = splice;
+                                }
+                                else if (alarmList[i].repeatTime == "Month(s)")
+                                {
+                                    alarmList[i].alarmDate = alarmList[i].alarmDate.AddMonths(Convert.ToInt32(alarmList[i].repeatDuration));
+                                    string splice = toastBox.Items[i].ToString();
+                                    int spliceIndex = splice.IndexOf("[");
+                                    if (spliceIndex >= 0)
+                                        splice = splice.Substring(0, spliceIndex);
+                                    splice = splice + "[" + DateTime.Now.AddMonths(Convert.ToInt32(alarmList[i].repeatDuration)).ToString() + "]";
+                                    toastBox.Items[i] = splice;
+                                    alarmList[i].alarmName = splice;
+                                }
+                                else if (alarmList[i].repeatTime == "Year(s)")
+                                {
+                                    alarmList[i].alarmDate = alarmList[i].alarmDate.AddYears(Convert.ToInt32(alarmList[i].repeatDuration));
+                                    string splice = toastBox.Items[i].ToString();
+                                    int spliceIndex = splice.IndexOf("[");
+                                    if (spliceIndex >= 0)
+                                        splice = splice.Substring(0, spliceIndex);
+                                    splice = splice + "[" + DateTime.Now.AddYears(Convert.ToInt32(alarmList[i].repeatDuration)).ToString() + "]";
                                     toastBox.Items[i] = splice;
                                     alarmList[i].alarmName = splice;
                                 }
@@ -120,14 +168,23 @@ namespace ReminderToast
             alarmList.RemoveAt(index);
             toastBox.Items.Remove(toastBox.SelectedItem);
         }
+
+        private void repeatCheckBox_Click(object sender, EventArgs e)
+        {
+            everyLabel.Visible = !everyLabel.Visible;
+            numericBox.Visible = !numericBox.Visible;
+            repeatBox.Visible = !repeatBox.Visible;
+        }
     } //End of Toast class
 
     public class Alarms
     {
         public string alarmName { get; set; }
         public string alarmTime { get; set; }
+        public DateTime alarmDate { get; set; }
         public string alarmDesc { get; set; }
         public bool repeat { get; set; }
         public string repeatTime { get; set; }
+        public long repeatDuration { get; set; }
     }
 }
