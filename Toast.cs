@@ -30,12 +30,12 @@ namespace ReminderToast
         private void Form1_Load(object sender, EventArgs e)
         {
            /*
-            * Ensure that the config file exist, then check if there is any saved reminders 
+            * Ensure that the config file exist, then check if the task list is empty or not (null)
             * Otherwise there will be an error due to attempting to set the object to a null object
             */
            if (File.Exists(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile))
             {
-                if (!string.IsNullOrEmpty(Properties.Settings.Default.TaskList.tasks.ToString()))
+                if (Properties.Settings.Default.TaskList != null)
                 {
                     alarmList = Properties.Settings.Default.TaskList;
                     for (int i = 0; i < alarmList.tasks.Count(); i++)
