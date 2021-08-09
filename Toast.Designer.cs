@@ -44,6 +44,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.toastTimer = new System.Windows.Forms.Timer(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.descriptionBox = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,13 +55,13 @@
             this.toastBox.HorizontalScrollbar = true;
             this.toastBox.Location = new System.Drawing.Point(12, 38);
             this.toastBox.Name = "toastBox";
-            this.toastBox.Size = new System.Drawing.Size(319, 154);
+            this.toastBox.Size = new System.Drawing.Size(319, 169);
             this.toastBox.TabIndex = 0;
             // 
             // timeControl
             // 
             this.timeControl.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.timeControl.Location = new System.Drawing.Point(337, 99);
+            this.timeControl.Location = new System.Drawing.Point(337, 149);
             this.timeControl.Name = "timeControl";
             this.timeControl.ShowUpDown = true;
             this.timeControl.Size = new System.Drawing.Size(88, 20);
@@ -67,7 +69,7 @@
             // 
             // addToastButton
             // 
-            this.addToastButton.Location = new System.Drawing.Point(337, 165);
+            this.addToastButton.Location = new System.Drawing.Point(337, 184);
             this.addToastButton.Name = "addToastButton";
             this.addToastButton.Size = new System.Drawing.Size(75, 23);
             this.addToastButton.TabIndex = 2;
@@ -77,12 +79,13 @@
             // 
             // removeToastButton
             // 
-            this.removeToastButton.Location = new System.Drawing.Point(434, 165);
+            this.removeToastButton.Location = new System.Drawing.Point(434, 184);
             this.removeToastButton.Name = "removeToastButton";
             this.removeToastButton.Size = new System.Drawing.Size(75, 23);
             this.removeToastButton.TabIndex = 3;
             this.removeToastButton.Text = "Remove";
             this.removeToastButton.UseVisualStyleBackColor = true;
+            this.removeToastButton.Click += new System.EventHandler(this.removeToastButton_Click);
             // 
             // toastNameBox
             // 
@@ -95,7 +98,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(431, 102);
+            this.label1.Location = new System.Drawing.Point(431, 155);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 5;
@@ -105,8 +108,10 @@
             // 
             this.repeatBox.FormattingEnabled = true;
             this.repeatBox.Items.AddRange(new object[] {
-            "4 Hours"});
-            this.repeatBox.Location = new System.Drawing.Point(511, 99);
+            "Never",
+            "Every Hour",
+            "Every Four Hours"});
+            this.repeatBox.Location = new System.Drawing.Point(511, 152);
             this.repeatBox.Name = "repeatBox";
             this.repeatBox.Size = new System.Drawing.Size(121, 21);
             this.repeatBox.TabIndex = 6;
@@ -161,7 +166,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(337, 83);
+            this.label3.Location = new System.Drawing.Point(337, 130);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 13);
             this.label3.TabIndex = 9;
@@ -173,11 +178,29 @@
             this.toastTimer.Interval = 1000;
             this.toastTimer.Tick += new System.EventHandler(this.toastTimer_Tick);
             // 
-            // Form1
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(337, 77);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(60, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Description";
+            // 
+            // descriptionBox
+            // 
+            this.descriptionBox.Location = new System.Drawing.Point(337, 93);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(295, 20);
+            this.descriptionBox.TabIndex = 11;
+            // 
+            // Toast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 200);
+            this.ClientSize = new System.Drawing.Size(650, 221);
+            this.Controls.Add(this.descriptionBox);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.repeatBox);
@@ -189,7 +212,7 @@
             this.Controls.Add(this.toastBox);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "Toast";
             this.Text = "Toast Reminder";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -216,6 +239,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer toastTimer;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox descriptionBox;
     }
 }
 

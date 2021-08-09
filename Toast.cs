@@ -37,14 +37,21 @@ namespace ReminderToast
             {
                 toastName = toastNameBox.Text;
             }
-            toastBox.Items.Add(toastName);
+            toastBox.Items.Add(toastName + " ["  + timeControl.Value.ToString("HH:mm:ss tt") + "]");
             alarmTime = timeControl.Value.ToString("HHmmss");
             aTime = long.Parse(alarmTime);
-
+            bool isRepeated = true;
+            if (String.IsNullOrEmpty(repeatBox.Text) || repeatBox.Text == "Never")
+            {
+                isRepeated = false;
+            }
             alarmList.Add(new Alarms
             {
-                alarmName = toastNameBox.Text,
-                alarmTime = alarmTime
+                alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString("HH:mm:ss tt") + "]",
+                alarmTime = alarmTime,
+                alarmDesc = descriptionBox.Text,
+                repeat = isRepeated,
+                repeatTime = repeatBox.Text
             });
         }
 
@@ -62,20 +69,43 @@ namespace ReminderToast
                         {
                             new ToastContentBuilder()
                              .AddText(alarmList[i].alarmName)
-                             .AddText(alarmList[i].alarmTime)
+                             .AddText(alarmList[i].alarmDesc)
                              .Show();
-                            toastTimer.Stop();
+                            if (alarmList[i].repeat == true)
+                            {
+                                if (alarmList[i].repeatTime == "Every Hour")
+                                {
+                                    alarmList[i].alarmTime = DateTime.Now.AddHours(1).ToString("HHmmss");
+                                }
+                                else if (alarmList[i].repeatTime == "Every Four Hours")
+                                {
+                                    alarmList[i].alarmTime = DateTime.Now.AddHours(4).ToString("HHmmss");
+                                }
+                            }
+                            else
+                            {
+                                toastBox.SetItemChecked(i, false); //Does not repeat so uncheck the entry
+                            }
                         }
                     }
                 }
             }
         }
 
+        private void removeToastButton_Click(object sender, EventArgs e)
+        {
+            int index = toastBox.SelectedIndex;
+            alarmList.RemoveAt(index);
+            toastBox.Items.Remove(toastBox.SelectedItem);
+        }
     } //End of Toast class
 
     public class Alarms
     {
         public string alarmName { get; set; }
         public string alarmTime { get; set; }
+        public string alarmDesc { get; set; }
+        public bool repeat { get; set; }
+        public string repeatTime { get; set; }
     }
 }
