@@ -38,6 +38,9 @@ namespace ReminderToast
                 toastName = toastNameBox.Text;
             }
             toastBox.Items.Add(toastName + " ["  + timeControl.Value.ToString("HH:mm:ss tt") + "]");
+            //Set entry to a checked state
+            toastBox.SetItemChecked(toastBox.Items.Count - 1, true);
+            //Get the time and other details
             alarmTime = timeControl.Value.ToString("HHmmss");
             aTime = long.Parse(alarmTime);
             bool isRepeated = true;
@@ -53,6 +56,11 @@ namespace ReminderToast
                 repeat = isRepeated,
                 repeatTime = repeatBox.Text
             });
+            //Clear all fields
+            toastNameBox.Clear();
+            descriptionBox.Clear();
+            timeControl.ResetText();
+            repeatBox.ResetText();
         }
 
         private void toastTimer_Tick(object sender, EventArgs e)
@@ -76,10 +84,24 @@ namespace ReminderToast
                                 if (alarmList[i].repeatTime == "Every Hour")
                                 {
                                     alarmList[i].alarmTime = DateTime.Now.AddHours(1).ToString("HHmmss");
+                                    string splice = toastBox.Items[i].ToString();
+                                    int spliceIndex = splice.IndexOf("[");
+                                    if (spliceIndex >= 0)
+                                        splice = splice.Substring(0, spliceIndex);
+                                    splice = splice + " [" + DateTime.Now.AddHours(1).ToString("HH:mm:ss tt") + "]";
+                                    toastBox.Items[i] = splice;
+                                    alarmList[i].alarmName = splice;
                                 }
                                 else if (alarmList[i].repeatTime == "Every Four Hours")
                                 {
                                     alarmList[i].alarmTime = DateTime.Now.AddHours(4).ToString("HHmmss");
+                                    string splice = toastBox.Items[i].ToString();
+                                    int spliceIndex = splice.IndexOf("[");
+                                    if (spliceIndex >= 0)
+                                        splice = splice.Substring(0, spliceIndex);
+                                    splice = splice + " [" + DateTime.Now.AddHours(4).ToString("HH:mm:ss tt") + "]";
+                                    toastBox.Items[i] = splice;
+                                    alarmList[i].alarmName = splice;
                                 }
                             }
                             else

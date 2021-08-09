@@ -100,9 +100,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(431, 155);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.Size = new System.Drawing.Size(42, 13);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Repeat every:";
+            this.label1.Text = "Repeat";
             // 
             // repeatBox
             // 
@@ -111,10 +111,11 @@
             "Never",
             "Every Hour",
             "Every Four Hours"});
-            this.repeatBox.Location = new System.Drawing.Point(511, 152);
+            this.repeatBox.Location = new System.Drawing.Point(479, 152);
             this.repeatBox.Name = "repeatBox";
-            this.repeatBox.Size = new System.Drawing.Size(121, 21);
+            this.repeatBox.Size = new System.Drawing.Size(153, 21);
             this.repeatBox.TabIndex = 6;
+            this.repeatBox.Text = "Never";
             // 
             // menuStrip1
             // 
