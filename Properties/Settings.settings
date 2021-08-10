@@ -5,5 +5,11 @@
     <Setting Name="TaskList" Type="ReminderToast.AlarmCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="USATime" Type="System.Windows.Forms.CheckState" Scope="User">
+      <Value Profile="(Default)">Checked</Value>
+    </Setting>
+    <Setting Name="WorldTime" Type="System.Windows.Forms.CheckState" Scope="User">
+      <Value Profile="(Default)">Unchecked</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

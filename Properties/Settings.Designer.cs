@@ -33,5 +33,29 @@ namespace ReminderToast.Properties {
                 this["TaskList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Checked")]
+        public global::System.Windows.Forms.CheckState USATime {
+            get {
+                return ((global::System.Windows.Forms.CheckState)(this["USATime"]));
+            }
+            set {
+                this["USATime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unchecked")]
+        public global::System.Windows.Forms.CheckState WorldTime {
+            get {
+                return ((global::System.Windows.Forms.CheckState)(this["WorldTime"]));
+            }
+            set {
+                this["WorldTime"] = value;
+            }
+        }
     }
 }

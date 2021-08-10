@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace ReminderToast
         DateTimePicker newClock = new DateTimePicker();
         string currentTime = DateTime.Now.ToString("HH:mm:ss");
         string alarmTime;
+        string format = "hh:mm:ss tt";
         long aTime = 0; //alarm time
         long nTime = 0; //current time
         AlarmCollection alarmList = new AlarmCollection();
@@ -37,6 +39,18 @@ namespace ReminderToast
             {
                 if (Properties.Settings.Default.TaskList != null)
                 {
+                    //Set Format
+                    menu12Hour.CheckState = Properties.Settings.Default.USATime;
+                    menu24Hour.CheckState = Properties.Settings.Default.WorldTime;
+                    if (menu12Hour.Checked == true)
+                    {
+                        format = "hh:mm:ss tt";
+                    }
+                    else
+                    {
+                        format = "HH:mm:ss";
+                    }
+                    //Load reminders
                     alarmList = Properties.Settings.Default.TaskList;
                     for (int i = 0; i < alarmList.tasks.Count(); i++)
                     {
@@ -48,6 +62,7 @@ namespace ReminderToast
                     }
                     toastBox.Update();
                     toastBox.Refresh();
+
                 }
             }
         }
@@ -59,7 +74,7 @@ namespace ReminderToast
             {
                 toastName = toastNameBox.Text;
             }
-            toastBox.Items.Add(toastName + " ["  + timeControl.Value.ToString("HH:mm:ss tt") + "]");
+            toastBox.Items.Add(toastName + " ["  + timeControl.Value.ToString(format) + "]");
             //Set entry to a checked state
             toastBox.SetItemChecked(toastBox.Items.Count - 1, true);
             //Get the time and other details
@@ -68,7 +83,7 @@ namespace ReminderToast
             long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
             alarmList.tasks.Add(new Alarms
             {
-                alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString("HH:mm:ss tt") + "]",
+                alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString(format) + "]",
                 alarmTime = alarmTime,
                 alarmDate = DateTime.Today,
                 alarmDesc = descriptionBox.Text,
@@ -117,7 +132,7 @@ namespace ReminderToast
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
                                         splice = splice.Substring(0, spliceIndex);
-                                    splice = splice + "[" + DateTime.Now.AddSeconds(alarmList.tasks[i].repeatDuration).ToString("HH:mm:ss tt") + "]";
+                                    splice = splice + "[" + DateTime.Now.AddSeconds(alarmList.tasks[i].repeatDuration).ToString(format) + "]";
                                     toastBox.Items[i] = splice;
                                     alarmList.tasks[i].alarmName = splice;
                                 }
@@ -128,7 +143,7 @@ namespace ReminderToast
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
                                         splice = splice.Substring(0, spliceIndex);
-                                    splice = splice + "[" + DateTime.Now.AddMinutes(alarmList.tasks[i].repeatDuration).ToString("HH:mm:ss tt") + "]";
+                                    splice = splice + "[" + DateTime.Now.AddMinutes(alarmList.tasks[i].repeatDuration).ToString(format) + "]";
                                     toastBox.Items[i] = splice;
                                     alarmList.tasks[i].alarmName = splice;
                                 }
@@ -139,7 +154,7 @@ namespace ReminderToast
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
                                         splice = splice.Substring(0, spliceIndex);
-                                    splice = splice + "[" + DateTime.Now.AddHours(alarmList.tasks[i].repeatDuration).ToString("HH:mm:ss tt") + "]";
+                                    splice = splice + "[" + DateTime.Now.AddHours(alarmList.tasks[i].repeatDuration).ToString(format) + "]";
                                     toastBox.Items[i] = splice;
                                     alarmList.tasks[i].alarmName = splice;
                                 }
@@ -213,7 +228,55 @@ namespace ReminderToast
                     alarmList.tasks[i].enabled = toastBox.GetItemChecked(i);
                 }
                 Properties.Settings.Default.TaskList = alarmList;
+                Properties.Settings.Default.USATime = menu12Hour.CheckState;
+                Properties.Settings.Default.WorldTime = menu24Hour.CheckState;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        private void menu12Hour_Click(object sender, EventArgs e)
+        {
+            format = "hh:mm:ss tt";
+            menu12Hour.Checked = true;
+            menu24Hour.Checked = false;
+
+            for (int i = 0; i < toastBox.Items.Count; i++)
+            {
+                string time = toastBox.Items[i].ToString().Substring(toastBox.Items[i].ToString().IndexOf('[') + 1);
+                int timeIndex = time.IndexOf("]");
+                if (timeIndex >= 0)
+                    time = time.Substring(0, timeIndex);
+                DateTime dt = DateTime.Parse(time);
+                string splice = toastBox.Items[i].ToString();
+                int spliceIndex = splice.IndexOf("[");
+                if (spliceIndex >= 0)
+                    splice = splice.Substring(0, spliceIndex);
+                splice = splice + "[" + dt.ToString("hh:mm:ss tt") + "]";
+                toastBox.Items[i] = splice;
+                alarmList.tasks[i].alarmName = splice;
+            }
+        }
+
+        private void menu24Hour_Click(object sender, EventArgs e)
+        {
+            format = "HH:mm:ss";
+            menu24Hour.Checked = true;
+            menu12Hour.Checked = false;
+
+            for (int i = 0; i < toastBox.Items.Count; i++)
+            {
+                string time = toastBox.Items[i].ToString().Substring(toastBox.Items[i].ToString().IndexOf('[') + 1);
+                int timeIndex = time.IndexOf("]");
+                if (timeIndex >= 0)
+                    time = time.Substring(0, timeIndex);
+                DateTime dt = DateTime.Parse(time);
+                string splice = toastBox.Items[i].ToString();
+                int spliceIndex = splice.IndexOf("[");
+                if (spliceIndex >= 0)
+                    splice = splice.Substring(0, spliceIndex);
+                splice = splice + "[" + dt.ToString("HH:mm:ss") + "]";
+                toastBox.Items[i] = splice;
+                alarmList.tasks[i].alarmName = splice;
             }
         }
     } //End of Toast class

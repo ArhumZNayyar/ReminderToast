@@ -39,6 +39,7 @@
             this.repeatBox = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.formatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,6 +51,8 @@
             this.repeatCheckBox = new System.Windows.Forms.CheckBox();
             this.everyLabel = new System.Windows.Forms.Label();
             this.numericBox = new System.Windows.Forms.NumericUpDown();
+            this.menu24Hour = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu12Hour = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
             this.SuspendLayout();
@@ -141,6 +144,7 @@
             // menuToolStripMenuItem
             // 
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.formatToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.helpToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -148,22 +152,31 @@
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
             // 
+            // formatToolStripMenuItem
+            // 
+            this.formatToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menu12Hour,
+            this.menu24Hour});
+            this.formatToolStripMenuItem.Name = "formatToolStripMenuItem";
+            this.formatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.formatToolStripMenuItem.Text = "Format";
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // taskLabel
@@ -249,6 +262,23 @@
             0});
             this.numericBox.Visible = false;
             // 
+            // menu24Hour
+            // 
+            this.menu24Hour.CheckState = global::ReminderToast.Properties.Settings.Default.WorldTime;
+            this.menu24Hour.Name = "menu24Hour";
+            this.menu24Hour.Size = new System.Drawing.Size(180, 22);
+            this.menu24Hour.Text = "24-Hour";
+            this.menu24Hour.Click += new System.EventHandler(this.menu24Hour_Click);
+            // 
+            // menu12Hour
+            // 
+            this.menu12Hour.Checked = true;
+            this.menu12Hour.CheckState = global::ReminderToast.Properties.Settings.Default.USATime;
+            this.menu12Hour.Name = "menu12Hour";
+            this.menu12Hour.Size = new System.Drawing.Size(180, 22);
+            this.menu12Hour.Text = "12-Hour";
+            this.menu12Hour.Click += new System.EventHandler(this.menu12Hour_Click);
+            // 
             // Toast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +340,9 @@
         private System.Windows.Forms.CheckBox repeatCheckBox;
         private System.Windows.Forms.Label everyLabel;
         private System.Windows.Forms.NumericUpDown numericBox;
+        private System.Windows.Forms.ToolStripMenuItem formatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menu12Hour;
+        private System.Windows.Forms.ToolStripMenuItem menu24Hour;
     }
 }
 
