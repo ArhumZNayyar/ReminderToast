@@ -41,6 +41,10 @@ namespace ReminderToast
                     for (int i = 0; i < alarmList.tasks.Count(); i++)
                     {
                         toastBox.Items.Add(Properties.Settings.Default.TaskList.tasks[i].alarmName);
+                        if (Properties.Settings.Default.TaskList.tasks[i].enabled)
+                        {
+                            toastBox.SetItemChecked(i, true);
+                        }
                     }
                     toastBox.Update();
                     toastBox.Refresh();
@@ -70,18 +74,18 @@ namespace ReminderToast
                 alarmDesc = descriptionBox.Text,
                 repeat = repeatCheckBox.Checked,
                 repeatTime = repeatBox.Text,
-                repeatDuration = duration
+                repeatDuration = duration,
+                enabled = true
             });
             //Clear all fields
             toastNameBox.Clear();
             descriptionBox.Clear();
             timeControl.ResetText();
-            repeatBox.ResetText();
             repeatCheckBox.Checked = false;
             everyLabel.Visible = false;
-            numericBox.ResetText();
+            numericBox.Value = 1;
             numericBox.Visible = false;
-            repeatBox.ResetText();
+            repeatBox.Text = "Hour(s)";
             repeatBox.Visible = false;
         }
 
@@ -204,6 +208,10 @@ namespace ReminderToast
         {
             if (alarmList.tasks.Count != 0)
             {
+                for (int i = 0; i < alarmList.tasks.Count; i++)
+                {
+                    alarmList.tasks[i].enabled = toastBox.GetItemChecked(i);
+                }
                 Properties.Settings.Default.TaskList = alarmList;
                 Properties.Settings.Default.Save();
             }
@@ -226,5 +234,6 @@ namespace ReminderToast
         public bool repeat { get; set; }
         public string repeatTime { get; set; }
         public long repeatDuration { get; set; }
+        public bool enabled { get; set; }
     }
 }
