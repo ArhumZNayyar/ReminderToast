@@ -279,6 +279,12 @@ namespace ReminderToast
                 alarmList.tasks[i].alarmName = splice;
             }
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            About aboutMenu = new About();
+            aboutMenu.Show();
+        }
     } //End of Toast class
 
     [SettingsSerializeAs(SettingsSerializeAs.Xml)]
