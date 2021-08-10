@@ -40,8 +40,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu12Hour = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu24Hour = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskLabel = new System.Windows.Forms.Label();
             this.timeLabel = new System.Windows.Forms.Label();
@@ -51,6 +49,14 @@
             this.repeatCheckBox = new System.Windows.Forms.CheckBox();
             this.everyLabel = new System.Windows.Forms.Label();
             this.numericBox = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.audioDialog = new System.Windows.Forms.OpenFileDialog();
+            this.browseButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.enableAudioBox = new System.Windows.Forms.CheckBox();
+            this.audioTextBox = new System.Windows.Forms.RichTextBox();
+            this.menu12Hour = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu24Hour = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
             this.SuspendLayout();
@@ -62,7 +68,7 @@
             this.toastBox.HorizontalScrollbar = true;
             this.toastBox.Location = new System.Drawing.Point(12, 38);
             this.toastBox.Name = "toastBox";
-            this.toastBox.Size = new System.Drawing.Size(319, 191);
+            this.toastBox.Size = new System.Drawing.Size(319, 259);
             this.toastBox.TabIndex = 0;
             // 
             // timeControl
@@ -77,7 +83,7 @@
             // addToastButton
             // 
             this.addToastButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.addToastButton.Location = new System.Drawing.Point(337, 207);
+            this.addToastButton.Location = new System.Drawing.Point(337, 274);
             this.addToastButton.Name = "addToastButton";
             this.addToastButton.Size = new System.Drawing.Size(75, 23);
             this.addToastButton.TabIndex = 5;
@@ -87,7 +93,7 @@
             // 
             // removeToastButton
             // 
-            this.removeToastButton.Location = new System.Drawing.Point(434, 207);
+            this.removeToastButton.Location = new System.Drawing.Point(434, 274);
             this.removeToastButton.Name = "removeToastButton";
             this.removeToastButton.Size = new System.Drawing.Size(75, 23);
             this.removeToastButton.TabIndex = 6;
@@ -156,23 +162,6 @@
             this.formatToolStripMenuItem.Name = "formatToolStripMenuItem";
             this.formatToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.formatToolStripMenuItem.Text = "Format";
-            // 
-            // menu12Hour
-            // 
-            this.menu12Hour.Checked = true;
-            this.menu12Hour.CheckState = global::ReminderToast.Properties.Settings.Default.USATime;
-            this.menu12Hour.Name = "menu12Hour";
-            this.menu12Hour.Size = new System.Drawing.Size(118, 22);
-            this.menu12Hour.Text = "12-Hour";
-            this.menu12Hour.Click += new System.EventHandler(this.menu12Hour_Click);
-            // 
-            // menu24Hour
-            // 
-            this.menu24Hour.CheckState = global::ReminderToast.Properties.Settings.Default.WorldTime;
-            this.menu24Hour.Name = "menu24Hour";
-            this.menu24Hour.Size = new System.Drawing.Size(118, 22);
-            this.menu24Hour.Text = "24-Hour";
-            this.menu24Hour.Click += new System.EventHandler(this.menu24Hour_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -264,13 +253,93 @@
             0});
             this.numericBox.Visible = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(337, 203);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Sound";
+            // 
+            // audioDialog
+            // 
+            this.audioDialog.DefaultExt = "wav";
+            this.audioDialog.Filter = "*wav file|*.wav|*mp3 file|*mp3";
+            this.audioDialog.Title = "Browse Audio Files";
+            // 
+            // browseButton
+            // 
+            this.browseButton.Enabled = false;
+            this.browseButton.Location = new System.Drawing.Point(337, 245);
+            this.browseButton.Name = "browseButton";
+            this.browseButton.Size = new System.Drawing.Size(75, 23);
+            this.browseButton.TabIndex = 21;
+            this.browseButton.Text = "Browse";
+            this.browseButton.UseVisualStyleBackColor = true;
+            this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(503, 229);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "Audio File";
+            // 
+            // enableAudioBox
+            // 
+            this.enableAudioBox.AutoSize = true;
+            this.enableAudioBox.Checked = global::ReminderToast.Properties.Settings.Default.customAudio;
+            this.enableAudioBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::ReminderToast.Properties.Settings.Default, "customAudio", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.enableAudioBox.Location = new System.Drawing.Point(340, 222);
+            this.enableAudioBox.Name = "enableAudioBox";
+            this.enableAudioBox.Size = new System.Drawing.Size(127, 17);
+            this.enableAudioBox.TabIndex = 23;
+            this.enableAudioBox.Text = "Enable Custom Audio";
+            this.enableAudioBox.UseVisualStyleBackColor = true;
+            this.enableAudioBox.Click += new System.EventHandler(this.enableAudioBox_Click);
+            // 
+            // audioTextBox
+            // 
+            this.audioTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ReminderToast.Properties.Settings.Default, "AudioFilePath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.audioTextBox.Enabled = false;
+            this.audioTextBox.Location = new System.Drawing.Point(426, 245);
+            this.audioTextBox.Name = "audioTextBox";
+            this.audioTextBox.Size = new System.Drawing.Size(206, 23);
+            this.audioTextBox.TabIndex = 22;
+            this.audioTextBox.Text = global::ReminderToast.Properties.Settings.Default.AudioFilePath;
+            // 
+            // menu12Hour
+            // 
+            this.menu12Hour.Checked = true;
+            this.menu12Hour.CheckState = global::ReminderToast.Properties.Settings.Default.USATime;
+            this.menu12Hour.Name = "menu12Hour";
+            this.menu12Hour.Size = new System.Drawing.Size(118, 22);
+            this.menu12Hour.Text = "12-Hour";
+            this.menu12Hour.Click += new System.EventHandler(this.menu12Hour_Click);
+            // 
+            // menu24Hour
+            // 
+            this.menu24Hour.CheckState = global::ReminderToast.Properties.Settings.Default.WorldTime;
+            this.menu24Hour.Name = "menu24Hour";
+            this.menu24Hour.Size = new System.Drawing.Size(118, 22);
+            this.menu24Hour.Text = "24-Hour";
+            this.menu24Hour.Click += new System.EventHandler(this.menu24Hour_Click);
+            // 
             // Toast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(650, 238);
+            this.ClientSize = new System.Drawing.Size(650, 314);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.enableAudioBox);
+            this.Controls.Add(this.audioTextBox);
+            this.Controls.Add(this.browseButton);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.numericBox);
             this.Controls.Add(this.everyLabel);
             this.Controls.Add(this.repeatCheckBox);
@@ -326,6 +395,12 @@
         private System.Windows.Forms.ToolStripMenuItem formatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menu12Hour;
         private System.Windows.Forms.ToolStripMenuItem menu24Hour;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.OpenFileDialog audioDialog;
+        private System.Windows.Forms.Button browseButton;
+        private System.Windows.Forms.RichTextBox audioTextBox;
+        private System.Windows.Forms.CheckBox enableAudioBox;
+        private System.Windows.Forms.Label label2;
     }
 }
 

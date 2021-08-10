@@ -7,22 +7,28 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.Foundation.Metadata;
+using Windows.Media.Playback;
+using Windows.System.Profile;
 
 namespace ReminderToast
 {
     public partial class Toast : Form
     {
+        AlarmCollection alarmList = new AlarmCollection();
         DateTimePicker newClock = new DateTimePicker();
+        MediaPlayer WinMediaPlayer = new MediaPlayer();
         string currentTime = DateTime.Now.ToString("HH:mm:ss");
         string alarmTime;
         string format = "hh:mm:ss tt";
+        string audioFileName = "";
         long aTime = 0; //alarm time
         long nTime = 0; //current time
-        AlarmCollection alarmList = new AlarmCollection();
 
         public Toast()
         {
@@ -39,7 +45,15 @@ namespace ReminderToast
             {
                 if (Properties.Settings.Default.TaskList != null)
                 {
-                    //Set Format
+                    //Load Audio Settings
+                    enableAudioBox.Checked = Properties.Settings.Default.customAudio;
+                    audioTextBox.Text = Properties.Settings.Default.AudioFilePath;
+                    if (enableAudioBox.Checked == true)
+                    {
+                        browseButton.Enabled = true;
+                        audioTextBox.Enabled = true;
+                    }
+                    //Set Time Format
                     menu12Hour.CheckState = Properties.Settings.Default.USATime;
                     menu24Hour.CheckState = Properties.Settings.Default.WorldTime;
                     if (menu12Hour.Checked == true)
@@ -118,10 +132,28 @@ namespace ReminderToast
                         //Check today's date matches with the reminder's set date and check if its time to send a toast
                         if (DateTime.Today == alarmList.tasks[i].alarmDate && nTime >= aTime && (nTime < (aTime + 60)))
                         {
-                            new ToastContentBuilder()
-                             .AddText(alarmList.tasks[i].alarmName)
-                             .AddText(alarmList.tasks[i].alarmDesc)
-                             .Show();
+                            var location = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase) + "\\logo.png");
+                            var toast = new ToastContentBuilder().AddText(alarmList.tasks[i].alarmName)
+                                .AddText(alarmList.tasks[i].alarmDesc);//.AddAppLogoOverride(location, ToastGenericAppLogoCrop.Circle);
+                            bool supportsCustomAudio = true;
+                            // Check if Windows Version is above build 1511. If not, do not play custom audio.
+                            if (AnalyticsInfo.VersionInfo.DeviceFamily.Equals("Windows.Desktop")
+                                && !ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 2))
+                            {
+                                supportsCustomAudio = false;
+                            }
+                            if (supportsCustomAudio && enableAudioBox.Checked == true)
+                            {
+                                ToastAudio audio = new ToastAudio()
+                                {
+                                    Src = new Uri(audioFileName),
+                                    Loop = false,
+                                    Silent = true
+                                };
+                                toast.AddAudio(audio);
+                                WinMediaPlayer.Play();
+                            }
+                            toast.Show();
                             if (alarmList.tasks[i].repeat == true)
                             {
                                 //If its a recurring reminder update the time and splice the display text to match the new time
@@ -230,6 +262,8 @@ namespace ReminderToast
                 Properties.Settings.Default.TaskList = alarmList;
                 Properties.Settings.Default.USATime = menu12Hour.CheckState;
                 Properties.Settings.Default.WorldTime = menu24Hour.CheckState;
+                Properties.Settings.Default.customAudio = enableAudioBox.Checked;
+                Properties.Settings.Default.AudioFilePath = audioTextBox.Text;
                 Properties.Settings.Default.Save();
             }
         }
@@ -284,6 +318,40 @@ namespace ReminderToast
         {
             About aboutMenu = new About();
             aboutMenu.Show();
+        }
+
+        private void browseButton_Click(object sender, EventArgs e)
+        {
+            var audioResult = audioDialog.ShowDialog();
+            if (audioResult == DialogResult.OK)
+            {
+                audioFileName = "file:///" + audioDialog.FileName;
+                audioFileName = audioFileName.Replace(@"\", "/");
+                audioTextBox.Text = audioDialog.FileName;
+                Uri soundUri = new Uri(audioFileName);
+#pragma warning disable CS0618 // Type or member is obsolete
+                WinMediaPlayer.SetUriSource(soundUri);
+#pragma warning restore CS0618 // Type or member is obsolete
+                WinMediaPlayer.Volume = 3 / 100.0f;
+            }
+            else
+            {
+                audioDialog.Dispose();
+            }
+        }
+
+        private void enableAudioBox_Click(object sender, EventArgs e)
+        {
+            if (enableAudioBox.Checked == false)
+            {
+                browseButton.Enabled = false;
+                audioTextBox.Enabled = false;
+            }
+            else
+            {
+                browseButton.Enabled = true;
+                audioTextBox.Enabled = true;
+            }
         }
     } //End of Toast class
 

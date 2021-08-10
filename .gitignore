@@ -45,3 +45,15 @@ Properties/Resources.Designer.cs
 Properties/Resources.resx
 Properties/Resources.Designer.cs
 Properties/Resources.resx
+bin/Release/alarmRing.wav
+bin/Release/logo.png
+bin/Release/pristine.mp3
+obj/Release/DesignTimeResolveAssemblyReferences.cache
+obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
+obj/Release/ReminderToast.csprojAssemblyReference.cache
+Properties/AssemblyInfo.cs
+Properties/Resources.Designer.cs
+Properties/Resources.resx
+Properties/Settings.settings
+Properties/Settings.Designer.cs
+*.settings
