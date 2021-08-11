@@ -64,6 +64,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.selectedDateBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.refreshButton = new System.Windows.Forms.Button();
+            this.dividerLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
             this.SuspendLayout();
@@ -388,7 +390,7 @@
             // 
             // selectedDateBox
             // 
-            this.selectedDateBox.Location = new System.Drawing.Point(337, 200);
+            this.selectedDateBox.Location = new System.Drawing.Point(337, 216);
             this.selectedDateBox.Name = "selectedDateBox";
             this.selectedDateBox.Size = new System.Drawing.Size(88, 20);
             this.selectedDateBox.TabIndex = 30;
@@ -396,11 +398,29 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(334, 184);
+            this.label4.Location = new System.Drawing.Point(334, 200);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(75, 13);
             this.label4.TabIndex = 31;
             this.label4.Text = "Selected Date";
+            // 
+            // refreshButton
+            // 
+            this.refreshButton.Location = new System.Drawing.Point(337, 158);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(75, 23);
+            this.refreshButton.TabIndex = 32;
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            // 
+            // dividerLabel
+            // 
+            this.dividerLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dividerLabel.Location = new System.Drawing.Point(337, 412);
+            this.dividerLabel.Name = "dividerLabel";
+            this.dividerLabel.Size = new System.Drawing.Size(323, 2);
+            this.dividerLabel.TabIndex = 33;
             // 
             // Toast
             // 
@@ -409,6 +429,8 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(668, 456);
+            this.Controls.Add(this.dividerLabel);
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.selectedDateBox);
             this.Controls.Add(this.label3);
@@ -489,6 +511,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox selectedDateBox;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.Label dividerLabel;
     }
 }
 

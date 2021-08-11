@@ -532,6 +532,11 @@ namespace ReminderToast
         {
             selectedDateBox.Text = e.Start.Date.ToString(dateFormat);
         }
+
+        private void refreshButton_Click(object sender, EventArgs e)
+        {
+            timeControl.ResetText();
+        }
     } //End of Toast class
 
     [SettingsSerializeAs(SettingsSerializeAs.Xml)]
