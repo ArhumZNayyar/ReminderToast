@@ -27,12 +27,29 @@ namespace ReminderToast
         string alarmTime;
         string format = "hh:mm:ss tt";
         string audioFileName = "";
+        string modifyName = "";
+        int modifyIndex = 0;
         long aTime = 0; //alarm time
         long nTime = 0; //current time
+        bool isModifying = false;
 
         public Toast()
         {
             InitializeComponent();
+        }
+
+        private void clearFields()
+        {
+            //Clear all fields
+            toastNameBox.Clear();
+            descriptionBox.Clear();
+            timeControl.ResetText();
+            repeatCheckBox.Checked = false;
+            everyLabel.Visible = false;
+            numericBox.Value = 1;
+            numericBox.Visible = false;
+            repeatBox.Text = "Hour(s)";
+            repeatBox.Visible = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -113,16 +130,7 @@ namespace ReminderToast
                 repeatDuration = duration,
                 enabled = true
             });
-            //Clear all fields
-            toastNameBox.Clear();
-            descriptionBox.Clear();
-            timeControl.ResetText();
-            repeatCheckBox.Checked = false;
-            everyLabel.Visible = false;
-            numericBox.Value = 1;
-            numericBox.Visible = false;
-            repeatBox.Text = "Hour(s)";
-            repeatBox.Visible = false;
+            clearFields();
         }
 
         private void toastTimer_Tick(object sender, EventArgs e)
@@ -359,6 +367,65 @@ namespace ReminderToast
                 browseButton.Enabled = true;
                 audioTextBox.Enabled = true;
             }
+        }
+
+        private void modifyButton_Click(object sender, EventArgs e)
+        {
+            clearFields();
+            modifyIndex = toastBox.SelectedIndex;
+            modifyName = toastBox.Items[modifyIndex].ToString();
+            toastNameBox.Text = toastBox.Items[modifyIndex].ToString();
+            descriptionBox.Text = alarmList.tasks[modifyIndex].alarmDesc;
+
+            modifyButton.Enabled = false;
+            addToastButton.Enabled = false;
+            removeToastButton.Enabled = false;
+            confirmChangeButton.Visible = true;
+            discardChangeButton.Visible = true;
+            confirmChangeButton.Enabled = true;
+            discardChangeButton.Enabled = true;
+
+            isModifying = true;
+        }
+
+        private void discardChangeButton_Click(object sender, EventArgs e)
+        {
+            isModifying = false;
+            confirmChangeButton.Visible = false;
+            discardChangeButton.Visible = false;
+            confirmChangeButton.Enabled = false;
+            discardChangeButton.Enabled = false;
+            modifyButton.Enabled = true;
+            addToastButton.Enabled = true;
+            removeToastButton.Enabled = true;
+
+            clearFields();
+        }
+
+        private void confirmChangeButton_Click(object sender, EventArgs e)
+        {
+            toastBox.Items[modifyIndex] = toastNameBox.Text + " [" + timeControl.Value.ToString(format) + "]";
+            alarmList.tasks[modifyIndex].alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString(format) + "]";
+            alarmList.tasks[modifyIndex].alarmDesc = descriptionBox.Text;
+            alarmList.tasks[modifyIndex].alarmTime = timeControl.Value.ToString("HHmmss");
+            alarmList.tasks[modifyIndex].alarmDate = DateTime.Today;
+            aTime = long.Parse(timeControl.Value.ToString("HHmmss"));
+            long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
+            alarmList.tasks[modifyIndex].repeat = repeatCheckBox.Checked;
+            alarmList.tasks[modifyIndex].repeatTime = repeatBox.Text;
+            alarmList.tasks[modifyIndex].repeatDuration = duration;
+            alarmList.tasks[modifyIndex].enabled = true;
+            toastBox.SetItemChecked(modifyIndex, true);
+
+            isModifying = false;
+            confirmChangeButton.Visible = false;
+            discardChangeButton.Visible = false;
+            confirmChangeButton.Enabled = false;
+            discardChangeButton.Enabled = false;
+            modifyButton.Enabled = true;
+            addToastButton.Enabled = true;
+            removeToastButton.Enabled = true;
+            clearFields();
         }
     } //End of Toast class
 

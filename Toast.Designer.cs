@@ -40,6 +40,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu12Hour = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu24Hour = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskLabel = new System.Windows.Forms.Label();
             this.timeLabel = new System.Windows.Forms.Label();
@@ -55,8 +57,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.enableAudioBox = new System.Windows.Forms.CheckBox();
             this.audioTextBox = new System.Windows.Forms.RichTextBox();
-            this.menu12Hour = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu24Hour = new System.Windows.Forms.ToolStripMenuItem();
+            this.modifyButton = new System.Windows.Forms.Button();
+            this.confirmChangeButton = new System.Windows.Forms.Button();
+            this.discardChangeButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
             this.SuspendLayout();
@@ -93,7 +96,7 @@
             // 
             // removeToastButton
             // 
-            this.removeToastButton.Location = new System.Drawing.Point(434, 274);
+            this.removeToastButton.Location = new System.Drawing.Point(451, 274);
             this.removeToastButton.Name = "removeToastButton";
             this.removeToastButton.Size = new System.Drawing.Size(75, 23);
             this.removeToastButton.TabIndex = 6;
@@ -162,6 +165,23 @@
             this.formatToolStripMenuItem.Name = "formatToolStripMenuItem";
             this.formatToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.formatToolStripMenuItem.Text = "Format";
+            // 
+            // menu12Hour
+            // 
+            this.menu12Hour.Checked = true;
+            this.menu12Hour.CheckState = global::ReminderToast.Properties.Settings.Default.USATime;
+            this.menu12Hour.Name = "menu12Hour";
+            this.menu12Hour.Size = new System.Drawing.Size(118, 22);
+            this.menu12Hour.Text = "12-Hour";
+            this.menu12Hour.Click += new System.EventHandler(this.menu12Hour_Click);
+            // 
+            // menu24Hour
+            // 
+            this.menu24Hour.CheckState = global::ReminderToast.Properties.Settings.Default.WorldTime;
+            this.menu24Hour.Name = "menu24Hour";
+            this.menu24Hour.Size = new System.Drawing.Size(118, 22);
+            this.menu24Hour.Text = "24-Hour";
+            this.menu24Hour.Click += new System.EventHandler(this.menu24Hour_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -311,22 +331,39 @@
             this.audioTextBox.TabIndex = 22;
             this.audioTextBox.Text = global::ReminderToast.Properties.Settings.Default.AudioFilePath;
             // 
-            // menu12Hour
+            // modifyButton
             // 
-            this.menu12Hour.Checked = true;
-            this.menu12Hour.CheckState = global::ReminderToast.Properties.Settings.Default.USATime;
-            this.menu12Hour.Name = "menu12Hour";
-            this.menu12Hour.Size = new System.Drawing.Size(118, 22);
-            this.menu12Hour.Text = "12-Hour";
-            this.menu12Hour.Click += new System.EventHandler(this.menu12Hour_Click);
+            this.modifyButton.Location = new System.Drawing.Point(557, 274);
+            this.modifyButton.Name = "modifyButton";
+            this.modifyButton.Size = new System.Drawing.Size(75, 23);
+            this.modifyButton.TabIndex = 25;
+            this.modifyButton.Text = "Modify";
+            this.modifyButton.UseVisualStyleBackColor = true;
+            this.modifyButton.Click += new System.EventHandler(this.modifyButton_Click);
             // 
-            // menu24Hour
+            // confirmChangeButton
             // 
-            this.menu24Hour.CheckState = global::ReminderToast.Properties.Settings.Default.WorldTime;
-            this.menu24Hour.Name = "menu24Hour";
-            this.menu24Hour.Size = new System.Drawing.Size(118, 22);
-            this.menu24Hour.Text = "24-Hour";
-            this.menu24Hour.Click += new System.EventHandler(this.menu24Hour_Click);
+            this.confirmChangeButton.Enabled = false;
+            this.confirmChangeButton.Location = new System.Drawing.Point(337, 274);
+            this.confirmChangeButton.Name = "confirmChangeButton";
+            this.confirmChangeButton.Size = new System.Drawing.Size(75, 23);
+            this.confirmChangeButton.TabIndex = 26;
+            this.confirmChangeButton.Text = "Confirm";
+            this.confirmChangeButton.UseVisualStyleBackColor = true;
+            this.confirmChangeButton.Visible = false;
+            this.confirmChangeButton.Click += new System.EventHandler(this.confirmChangeButton_Click);
+            // 
+            // discardChangeButton
+            // 
+            this.discardChangeButton.Enabled = false;
+            this.discardChangeButton.Location = new System.Drawing.Point(451, 274);
+            this.discardChangeButton.Name = "discardChangeButton";
+            this.discardChangeButton.Size = new System.Drawing.Size(75, 23);
+            this.discardChangeButton.TabIndex = 27;
+            this.discardChangeButton.Text = "Discard";
+            this.discardChangeButton.UseVisualStyleBackColor = true;
+            this.discardChangeButton.Visible = false;
+            this.discardChangeButton.Click += new System.EventHandler(this.discardChangeButton_Click);
             // 
             // Toast
             // 
@@ -335,6 +372,9 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(650, 314);
+            this.Controls.Add(this.discardChangeButton);
+            this.Controls.Add(this.confirmChangeButton);
+            this.Controls.Add(this.modifyButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.enableAudioBox);
             this.Controls.Add(this.audioTextBox);
@@ -401,6 +441,9 @@
         private System.Windows.Forms.RichTextBox audioTextBox;
         private System.Windows.Forms.CheckBox enableAudioBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button modifyButton;
+        private System.Windows.Forms.Button confirmChangeButton;
+        private System.Windows.Forms.Button discardChangeButton;
     }
 }
 
