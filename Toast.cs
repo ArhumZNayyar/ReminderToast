@@ -24,7 +24,7 @@ namespace ReminderToast
         DateTimePicker newClock = new DateTimePicker();
         DateTime reminderTime;
         MediaPlayer WinMediaPlayer = new MediaPlayer();
-        string format = "hh:mm:ss tt"; //USA
+        string format = "MM/dd/yyyy hh:mm:ss tt"; //USA
         string dateFormat = "MM/dd/yyyy"; //USA
         string audioFileName = "";
         string modifyName = "";
@@ -80,12 +80,12 @@ namespace ReminderToast
                     menu24Hour.CheckState = Properties.Settings.Default.WorldTime;
                     if (menu12Hour.Checked == true)
                     {
-                        format = "hh:mm:ss tt";
+                        format = "MM/dd/yyyy hh:mm:ss tt";
                         dateFormat = "MM/dd/yyyy";
                     }
                     else
                     {
-                        format = "HH:mm:ss";
+                        format = "dd/MM/yyyy HH:mm:ss";
                         dateFormat = "dd/MM/yyyy";
                     }
                     //Load reminders
@@ -245,6 +245,10 @@ namespace ReminderToast
                         //If the reminder was missed due to some reason (I.E: User's computer is off) and its the next day
                         else if (alarmList.tasks[i].alarmDate < DateTime.Today) {
                             alarmList.tasks[i].alarmDate = DateTime.Today;
+                            var toast = new ToastContentBuilder().AddText("You missed your reminder!")
+                                .AddText(alarmList.tasks[i].alarmName)
+                                .AddText("The day of the reminder was pushed forward to today.");
+                            toast.Show();
                         }
                         //Same as above but if the day is still the same and only the time of the day is in the past
                         else if (DateTime.Today == alarmList.tasks[i].alarmDate && DateTime.Now > alarmList.tasks[i].alarmTime && (DateTime.Now > (alarmList.tasks[i].alarmTime.AddSeconds(60))))
@@ -384,7 +388,7 @@ namespace ReminderToast
 
         private void menu12Hour_Click(object sender, EventArgs e)
         {
-            format = "hh:mm:ss tt";
+            format = "MM/dd/yyyy hh:mm:ss tt";
             dateFormat = "MM/dd/yyyy";
             menu12Hour.Checked = true;
             menu24Hour.Checked = false;
@@ -400,7 +404,7 @@ namespace ReminderToast
                 int spliceIndex = splice.IndexOf("[");
                 if (spliceIndex >= 0)
                     splice = splice.Substring(0, spliceIndex);
-                splice = splice + "[" + dt.ToString("hh:mm:ss tt") + "]";
+                splice = splice + "[" + dt.ToString(format) + "]";
                 toastBox.Items[i] = splice;
                 alarmList.tasks[i].alarmName = splice;
             }
@@ -408,7 +412,7 @@ namespace ReminderToast
 
         private void menu24Hour_Click(object sender, EventArgs e)
         {
-            format = "HH:mm:ss";
+            format = "dd/MM/yyyy HH:mm:ss";
             dateFormat = "dd/MM/yyyy";
             menu24Hour.Checked = true;
             menu12Hour.Checked = false;
@@ -424,7 +428,7 @@ namespace ReminderToast
                 int spliceIndex = splice.IndexOf("[");
                 if (spliceIndex >= 0)
                     splice = splice.Substring(0, spliceIndex);
-                splice = splice + "[" + dt.ToString("HH:mm:ss") + "]";
+                splice = splice + "[" + dt.ToString(format) + "]";
                 toastBox.Items[i] = splice;
                 alarmList.tasks[i].alarmName = splice;
             }
