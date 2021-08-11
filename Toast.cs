@@ -112,7 +112,7 @@ namespace ReminderToast
             {
                 toastName = toastNameBox.Text;
             }
-            toastBox.Items.Add(toastName + " ["  + timeControl.Value.ToString(format) + "]");
+            toastBox.Items.Add(toastName + " ["  + monthCalendar.SelectionRange.Start.ToString(dateFormat) + timeControl.Value.ToString(format.Substring(10)) + "]");
             //Set entry to a checked state
             toastBox.SetItemChecked(toastBox.Items.Count - 1, true);
             //Get the time and other details
@@ -509,8 +509,10 @@ namespace ReminderToast
 
         private void confirmChangeButton_Click(object sender, EventArgs e)
         {
-            toastBox.Items[modifyIndex] = toastNameBox.Text + " [" + timeControl.Value.ToString(format) + "]";
-            alarmList.tasks[modifyIndex].alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString(format) + "]";
+            toastBox.Items[modifyIndex] = toastNameBox.Text + " [" + monthCalendar.SelectionRange.Start.ToString(dateFormat) 
+                + timeControl.Value.ToString(format.Substring(10)) + "]";
+            alarmList.tasks[modifyIndex].alarmName = toastNameBox.Text + " [" + 
+                monthCalendar.SelectionRange.Start.ToString(dateFormat) + timeControl.Value.ToString(format.Substring(10)) + "]";
             alarmList.tasks[modifyIndex].alarmDesc = descriptionBox.Text;
             alarmList.tasks[modifyIndex].alarmTime = timeControl.Value;
             alarmList.tasks[modifyIndex].alarmDate = monthCalendar.SelectionRange.Start;
