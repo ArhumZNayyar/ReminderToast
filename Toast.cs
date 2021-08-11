@@ -361,6 +361,7 @@ namespace ReminderToast
         private void menu12Hour_Click(object sender, EventArgs e)
         {
             format = "hh:mm:ss tt";
+            dateFormat = "MM/dd/yyyy";
             menu12Hour.Checked = true;
             menu24Hour.Checked = false;
 
@@ -384,6 +385,7 @@ namespace ReminderToast
         private void menu24Hour_Click(object sender, EventArgs e)
         {
             format = "HH:mm:ss";
+            dateFormat = "dd/MM/yyyy";
             menu24Hour.Checked = true;
             menu12Hour.Checked = false;
 
