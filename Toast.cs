@@ -277,34 +277,58 @@ namespace ReminderToast
                                 }
                                 else if (alarmList.tasks[i].repeatTime == "Day(s)")
                                 {
-                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(alarmList.tasks[i].repeatDuration);
+                                    long difference = 0;
+                                    var newTime = alarmList.tasks[i].alarmTime;
+                                    //Keep incrementing the time by its specified value until it is past the current time
+                                    while (newTime < DateTime.Today)
+                                    {
+                                        newTime = newTime.AddDays(alarmList.tasks[i].repeatDuration);
+                                        difference += alarmList.tasks[i].repeatDuration;
+                                    }
+                                    alarmList.tasks[i].alarmTime = newTime;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
                                         splice = splice.Substring(0, spliceIndex);
-                                    splice = splice + "[" + DateTime.Now.AddDays(alarmList.tasks[i].repeatDuration).ToString() + "]";
+                                    splice = splice + "[" + newTime.ToString(format) + "]";
                                     toastBox.Items[i] = splice;
                                     alarmList.tasks[i].alarmName = splice;
                                 }
                                 else if (alarmList.tasks[i].repeatTime == "Month(s)")
                                 {
-                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddMonths(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
+                                    long difference = 0;
+                                    var newTime = alarmList.tasks[i].alarmTime;
+                                    //Keep incrementing the time by its specified value until it is past the current time
+                                    while (newTime.Month < DateTime.Today.Month)
+                                    {
+                                        newTime = newTime.AddMonths(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
+                                        difference += alarmList.tasks[i].repeatDuration;
+                                    }
+                                    alarmList.tasks[i].alarmTime = newTime;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
                                         splice = splice.Substring(0, spliceIndex);
-                                    splice = splice + "[" + DateTime.Now.AddMonths(Convert.ToInt32(alarmList.tasks[i].repeatDuration)).ToString() + "]";
+                                    splice = splice + "[" + newTime.ToString(format) + "]";
                                     toastBox.Items[i] = splice;
                                     alarmList.tasks[i].alarmName = splice;
                                 }
                                 else if (alarmList.tasks[i].repeatTime == "Year(s)")
                                 {
-                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddYears(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
+                                    long difference = 0;
+                                    var newTime = alarmList.tasks[i].alarmTime;
+                                    //Keep incrementing the time by its specified value until it is past the current time
+                                    while (newTime.Year < DateTime.Today.Year)
+                                    {
+                                        newTime = newTime.AddYears(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
+                                        difference += alarmList.tasks[i].repeatDuration;
+                                    }
+                                    alarmList.tasks[i].alarmTime = newTime;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
                                         splice = splice.Substring(0, spliceIndex);
-                                    splice = splice + "[" + DateTime.Now.AddYears(Convert.ToInt32(alarmList.tasks[i].repeatDuration)).ToString() + "]";
+                                    splice = splice + "[" + newTime.ToString(format) + "]";
                                     toastBox.Items[i] = splice;
                                     alarmList.tasks[i].alarmName = splice;
                                 }
