@@ -66,8 +66,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.refreshButton = new System.Windows.Forms.Button();
             this.dividerLabel = new System.Windows.Forms.Label();
+            this.repeatTimesBox = new System.Windows.Forms.NumericUpDown();
+            this.AmountTimesLabel = new System.Windows.Forms.Label();
+            this.timesHelpLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).BeginInit();
             this.SuspendLayout();
             // 
             // toastBox
@@ -422,6 +426,39 @@
             this.dividerLabel.Size = new System.Drawing.Size(323, 2);
             this.dividerLabel.TabIndex = 33;
             // 
+            // repeatTimesBox
+            // 
+            this.repeatTimesBox.Location = new System.Drawing.Point(538, 300);
+            this.repeatTimesBox.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.repeatTimesBox.Name = "repeatTimesBox";
+            this.repeatTimesBox.Size = new System.Drawing.Size(91, 20);
+            this.repeatTimesBox.TabIndex = 34;
+            this.repeatTimesBox.Visible = false;
+            // 
+            // AmountTimesLabel
+            // 
+            this.AmountTimesLabel.AutoSize = true;
+            this.AmountTimesLabel.Location = new System.Drawing.Point(627, 302);
+            this.AmountTimesLabel.Name = "AmountTimesLabel";
+            this.AmountTimesLabel.Size = new System.Drawing.Size(35, 13);
+            this.AmountTimesLabel.TabIndex = 35;
+            this.AmountTimesLabel.Text = "Times";
+            this.AmountTimesLabel.Visible = false;
+            // 
+            // timesHelpLabel
+            // 
+            this.timesHelpLabel.AutoSize = true;
+            this.timesHelpLabel.Location = new System.Drawing.Point(538, 323);
+            this.timesHelpLabel.Name = "timesHelpLabel";
+            this.timesHelpLabel.Size = new System.Drawing.Size(56, 13);
+            this.timesHelpLabel.TabIndex = 36;
+            this.timesHelpLabel.Text = "0 = Infinite";
+            this.timesHelpLabel.Visible = false;
+            // 
             // Toast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -429,6 +466,9 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(668, 456);
+            this.Controls.Add(this.timesHelpLabel);
+            this.Controls.Add(this.AmountTimesLabel);
+            this.Controls.Add(this.repeatTimesBox);
             this.Controls.Add(this.dividerLabel);
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.label4);
@@ -470,6 +510,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -513,6 +554,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.Label dividerLabel;
+        private System.Windows.Forms.NumericUpDown repeatTimesBox;
+        private System.Windows.Forms.Label AmountTimesLabel;
+        private System.Windows.Forms.Label timesHelpLabel;
     }
 }
 

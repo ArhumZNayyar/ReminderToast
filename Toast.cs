@@ -48,6 +48,10 @@ namespace ReminderToast
             numericBox.Visible = false;
             repeatBox.Text = "Hour(s)";
             repeatBox.Visible = false;
+            repeatTimesBox.Visible = false;
+            repeatTimesBox.Value = 0;
+            AmountTimesLabel.Visible = false;
+            timesHelpLabel.Visible = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -118,6 +122,7 @@ namespace ReminderToast
             //Get the time and other details
             reminderTime = timeControl.Value;
             long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
+            long amount = Convert.ToInt64(Math.Round(repeatTimesBox.Value, 0));
             alarmList.tasks.Add(new Alarms
             {
                 alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString(format) + "]",
@@ -127,6 +132,8 @@ namespace ReminderToast
                 repeat = repeatCheckBox.Checked,
                 repeatTime = repeatBox.Text,
                 repeatDuration = duration,
+                repeatAmount = amount,
+                currentRepeatAmount = 0,
                 enabled = true
             });
             clearFields();
@@ -241,6 +248,15 @@ namespace ReminderToast
                             {
                                 toastBox.SetItemChecked(i, false); //Does not repeat so uncheck the entry
                             }
+                            //Increment the current repeat amount value if it's not infinite (0)
+                            //The count will still increment even if it was due to missing the reminder
+                            if (alarmList.tasks[i].repeatAmount != 0)
+                            {
+                                alarmList.tasks[i].currentRepeatAmount++;
+                                //If the amount has reached it's desired value, disable the reminder
+                                if (alarmList.tasks[i].currentRepeatAmount >= alarmList.tasks[i].repeatAmount)
+                                    toastBox.SetItemChecked(i, false);
+                            }
                         }
                         //If the reminder was missed due to some reason (I.E: User's computer is off) and its the next day
                         else if (alarmList.tasks[i].alarmDate.Day < DateTime.Today.Day) {
@@ -342,7 +358,15 @@ namespace ReminderToast
                             {
                                 toastBox.SetItemChecked(i, false); //Does not repeat so uncheck the entry
                             }
-
+                            //Increment the current repeat amount value if it's not infinite (0)
+                            //The count will still increment even if it was due to missing the reminder
+                            if (alarmList.tasks[i].repeatAmount != 0)
+                            {
+                                alarmList.tasks[i].currentRepeatAmount++;
+                                //If the amount has reached it's desired value, disable the reminder
+                                if (alarmList.tasks[i].currentRepeatAmount >= alarmList.tasks[i].repeatAmount)
+                                    toastBox.SetItemChecked(i, false);
+                            }
                         }
                     }
                 }
@@ -364,6 +388,9 @@ namespace ReminderToast
             everyLabel.Visible = !everyLabel.Visible;
             numericBox.Visible = !numericBox.Visible;
             repeatBox.Visible = !repeatBox.Visible;
+            repeatTimesBox.Visible = !repeatTimesBox.Visible;
+            AmountTimesLabel.Visible = !AmountTimesLabel.Visible;
+            timesHelpLabel.Visible = !timesHelpLabel.Visible;
         }
 
         private void Toast_FormClosing(object sender, FormClosingEventArgs e)
@@ -558,6 +585,8 @@ namespace ReminderToast
         public bool repeat { get; set; }
         public string repeatTime { get; set; }
         public long repeatDuration { get; set; }
+        public long repeatAmount { get; set; }
+        public long currentRepeatAmount { get; set; }
         public bool enabled { get; set; }
     }
 }
