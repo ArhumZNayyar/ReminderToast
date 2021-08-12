@@ -69,9 +69,14 @@
             this.repeatTimesBox = new System.Windows.Forms.NumericUpDown();
             this.AmountTimesLabel = new System.Windows.Forms.Label();
             this.timesHelpLabel = new System.Windows.Forms.Label();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notifyContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).BeginInit();
+            this.notifyContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // toastBox
@@ -162,7 +167,8 @@
             // 
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.formatToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
@@ -459,6 +465,37 @@
             this.timesHelpLabel.Text = "0 = Infinite";
             this.timesHelpLabel.Visible = false;
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon.BalloonTipText = "Minimized to System Tray";
+            this.notifyIcon.BalloonTipTitle = "Reminder Toast";
+            this.notifyIcon.ContextMenuStrip = this.notifyContextMenu;
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "Reminder Toast";
+            this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+            // 
+            // notifyContextMenu
+            // 
+            this.notifyContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitMenuItem});
+            this.notifyContextMenu.Name = "notifyContextMenu";
+            this.notifyContextMenu.Size = new System.Drawing.Size(94, 26);
+            // 
+            // exitMenuItem
+            // 
+            this.exitMenuItem.Name = "exitMenuItem";
+            this.exitMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitMenuItem.Text = "Exit";
+            this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // Toast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -507,10 +544,12 @@
             this.Text = "Reminder Toast";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Toast_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Toast_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).EndInit();
+            this.notifyContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -557,6 +596,10 @@
         private System.Windows.Forms.NumericUpDown repeatTimesBox;
         private System.Windows.Forms.Label AmountTimesLabel;
         private System.Windows.Forms.Label timesHelpLabel;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.ContextMenuStrip notifyContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 

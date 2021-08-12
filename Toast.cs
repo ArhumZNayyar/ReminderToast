@@ -567,6 +567,39 @@ namespace ReminderToast
         {
             timeControl.ResetText();
         }
+
+        private void Toast_Resize(object sender, EventArgs e)
+        {
+            //If the form was minimized, set it to the System Tray.  
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                notifyIcon.Visible = true;
+                if (Properties.Settings.Default.showBalloonMinimize == true)
+                {
+                    notifyIcon.ShowBalloonTip(3500);
+                    Properties.Settings.Default.showBalloonMinimize = false;
+                }
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            notifyIcon.Visible = false;
+        }
+
+        private void exitMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     } //End of Toast class
 
     [SettingsSerializeAs(SettingsSerializeAs.Xml)]
