@@ -29,7 +29,6 @@ namespace ReminderToast
         string audioFileName = "";
         string modifyName = "";
         int modifyIndex = 0;
-        bool isModifying = false;
 
         public Toast()
         {
@@ -513,13 +512,11 @@ namespace ReminderToast
             discardChangeButton.Visible = true;
             confirmChangeButton.Enabled = true;
             discardChangeButton.Enabled = true;
-
-            isModifying = true;
         }
 
         private void discardChangeButton_Click(object sender, EventArgs e)
         {
-            isModifying = false;
+            //Discard changes simply just resets the input fields
             confirmChangeButton.Visible = false;
             discardChangeButton.Visible = false;
             confirmChangeButton.Enabled = false;
@@ -533,6 +530,7 @@ namespace ReminderToast
 
         private void confirmChangeButton_Click(object sender, EventArgs e)
         {
+            //Post the modifications to the selected reminder
             toastBox.Items[modifyIndex] = toastNameBox.Text + " [" + monthCalendar.SelectionRange.Start.ToString(dateFormat) 
                 + timeControl.Value.ToString(format.Substring(10)) + "]";
             alarmList.tasks[modifyIndex].alarmName = toastNameBox.Text + " [" + 
@@ -541,13 +539,15 @@ namespace ReminderToast
             alarmList.tasks[modifyIndex].alarmTime = timeControl.Value;
             alarmList.tasks[modifyIndex].alarmDate = monthCalendar.SelectionRange.Start;
             long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
+            long amount = Convert.ToInt64(Math.Round(repeatTimesBox.Value, 0));
             alarmList.tasks[modifyIndex].repeat = repeatCheckBox.Checked;
             alarmList.tasks[modifyIndex].repeatTime = repeatBox.Text;
             alarmList.tasks[modifyIndex].repeatDuration = duration;
+            alarmList.tasks[modifyIndex].repeatAmount = amount;
+            alarmList.tasks[modifyIndex].currentRepeatAmount = 0;
             alarmList.tasks[modifyIndex].enabled = true;
             toastBox.SetItemChecked(modifyIndex, true);
-
-            isModifying = false;
+            //Reset the fields to their original state
             confirmChangeButton.Visible = false;
             discardChangeButton.Visible = false;
             confirmChangeButton.Enabled = false;
