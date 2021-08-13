@@ -110,6 +110,20 @@ namespace ReminderToast
 
         private void addToastButton_Click(object sender, EventArgs e)
         {
+            if (monthCalendar.SelectionRange.Start < DateTime.Today)
+            {
+                MessageBox.Show("You cannot set a reminder for the past!", "Error");
+                clearFields();
+                return;
+            }
+
+            if (timeControl.Value.TimeOfDay < DateTime.Now.TimeOfDay)
+            {
+                MessageBox.Show("You cannot set a reminder for the past!", "Error");
+                clearFields();
+                return;
+            }
+
             string toastName = "NULL";
             if (!String.IsNullOrEmpty(toastNameBox.Text))
             {
@@ -258,26 +272,35 @@ namespace ReminderToast
                             }
                         }
                         //If the reminder was missed due to some reason (I.E: User's computer is off) and its the next day
-                        else if (alarmList.tasks[i].alarmDate.Day < DateTime.Today.Day) {
-                            while (alarmList.tasks[i].alarmDate.Day < DateTime.Today.Day)
-                            {
-                                alarmList.tasks[i].alarmTime.AddDays(1);
-                                alarmList.tasks[i].alarmDate.AddDays(1);
-                            }
-                            string splice = toastBox.Items[i].ToString();
-                            int spliceIndex = splice.IndexOf("[");
-                            if (spliceIndex >= 0)
-                                splice = splice.Substring(0, spliceIndex);
-                            splice = splice + "[" + alarmList.tasks[i].alarmTime.ToString(format) + "]";
-                            toastBox.Items[i] = splice;
-                            alarmList.tasks[i].alarmName = splice;
-                            var toast = new ToastContentBuilder().AddText("You missed your reminder!")
-                                .AddText(alarmList.tasks[i].alarmName)
-                                .AddText("The day of the reminder was pushed forward to today.");
-                            toast.Show();
-                        }
-                        //Same as above but if the day is still the same and only the time of the day is in the past
-                        else if (DateTime.Today == alarmList.tasks[i].alarmDate && DateTime.Now > alarmList.tasks[i].alarmTime && (DateTime.Now > (alarmList.tasks[i].alarmTime.AddSeconds(60))))
+                        //else if (alarmList.tasks[i].alarmDate.Day < DateTime.Today.Day) {
+                        //    var newDate = alarmList.tasks[i].alarmDate;
+                        //    if (alarmList.tasks[i].repeatTime == "Day(s)")
+                        //    {
+                        //        alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(alarmList.tasks[i].repeatDuration);
+                        //    }
+                        //    else if (ala)
+                        //    {
+
+                        //    }
+                        //    else
+                        //    { 
+                        //        alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(1);
+                        //    }
+                        //    string splice = toastBox.Items[i].ToString();
+                        //    int spliceIndex = splice.IndexOf("[");
+                        //    if (spliceIndex >= 0)
+                        //        splice = splice.Substring(0, spliceIndex);
+                        //    splice = splice + "[" + alarmList.tasks[i].alarmTime.ToString(format) + "]";
+                        //    toastBox.Items[i] = splice;
+                        //    alarmList.tasks[i].alarmName = splice;
+                        //    var toast = new ToastContentBuilder().AddText("You missed your reminder!")
+                        //        .AddText(alarmList.tasks[i].alarmName)
+                        //        .AddText("The day of the reminder was pushed forward to it's next scheduled day.");
+                        //    toast.Show();
+                        //}
+
+                        //If the reminder was missed due to some reason (I.E: User's computer is off)
+                        else if (DateTime.Today >= alarmList.tasks[i].alarmDate && DateTime.Now > alarmList.tasks[i].alarmTime && (DateTime.Now > (alarmList.tasks[i].alarmTime.AddSeconds(60))))
                         {
                             var toast = new ToastContentBuilder().AddText("You missed your reminder!")
                                 .AddText(alarmList.tasks[i].alarmName)
@@ -288,13 +311,16 @@ namespace ReminderToast
                             {
                                 if (alarmList.tasks[i].repeatTime == "Hour(s)")
                                 {
-                                    long difference = 0;
                                     var newTime = alarmList.tasks[i].alarmTime;
                                     //Keep incrementing the time by its specified value until it is past the current time
                                     while (newTime < DateTime.Now)
                                     {
                                         newTime = newTime.AddHours(alarmList.tasks[i].repeatDuration);
-                                        difference += alarmList.tasks[i].repeatDuration;
+                                    }
+                                    //Handle the time first then the date
+                                    while (alarmList.tasks[i].alarmDate < DateTime.Today)
+                                    {
+                                        alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(1);
                                     }
                                     alarmList.tasks[i].alarmTime = newTime;
                                     string splice = toastBox.Items[i].ToString();
@@ -308,10 +334,12 @@ namespace ReminderToast
                                 else if (alarmList.tasks[i].repeatTime == "Day(s)")
                                 {
                                     var newTime = alarmList.tasks[i].alarmTime;
-                                    //Since the day is taken care of previously, we just need to add days by the specific recurrence
-                                    newTime = newTime.AddDays(alarmList.tasks[i].repeatDuration);
+                                    while (newTime < DateTime.Now)
+                                    {
+                                        newTime = newTime.AddDays(alarmList.tasks[i].repeatDuration);
+                                        alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(alarmList.tasks[i].repeatDuration);
+                                    }
                                     alarmList.tasks[i].alarmTime = newTime;
-                                    alarmList.tasks[i].alarmDate.AddDays(alarmList.tasks[i].repeatDuration);
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
@@ -325,7 +353,7 @@ namespace ReminderToast
                                     var newTime = alarmList.tasks[i].alarmTime;
                                     newTime = newTime.AddMonths(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
                                     alarmList.tasks[i].alarmTime = newTime;
-                                    alarmList.tasks[i].alarmDate.AddMonths(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
+                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddMonths(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
@@ -339,7 +367,7 @@ namespace ReminderToast
                                     var newTime = alarmList.tasks[i].alarmTime;
                                     newTime = newTime.AddYears(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
                                     alarmList.tasks[i].alarmTime = newTime;
-                                    alarmList.tasks[i].alarmDate.AddYears(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
+                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddYears(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
