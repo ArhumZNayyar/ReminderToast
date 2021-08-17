@@ -117,7 +117,7 @@ namespace ReminderToast
                 return;
             }
 
-            if (timeControl.Value.TimeOfDay < DateTime.Now.TimeOfDay)
+            if (monthCalendar.SelectionRange.Start == DateTime.Today && timeControl.Value.TimeOfDay < DateTime.Now.TimeOfDay)
             {
                 MessageBox.Show("You cannot set a reminder for the past!", "Error");
                 clearFields();
