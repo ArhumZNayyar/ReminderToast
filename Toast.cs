@@ -104,6 +104,8 @@ namespace ReminderToast
                     toastBox.Update();
                     toastBox.Refresh();
 
+                    // Set selected date to today's date
+                    selectedDateBox.Text = monthCalendar.SelectionRange.Start.Date.ToString(dateFormat); ;
                 }
             }
         }
