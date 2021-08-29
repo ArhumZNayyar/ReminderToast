@@ -51,6 +51,11 @@ namespace ReminderToast
             repeatTimesBox.Value = 0;
             AmountTimesLabel.Visible = false;
             timesHelpLabel.Visible = false;
+            enableAudioBox.Checked = false;
+            browseButton.Enabled = false;
+            audioTextBox.ResetText();
+            monthCalendar.SelectionRange.Start = DateTime.Today;
+            selectedDateBox.Text = monthCalendar.SelectionRange.Start.Date.ToString(dateFormat);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -406,7 +411,6 @@ namespace ReminderToast
                 Properties.Settings.Default.TaskList = alarmList;
                 Properties.Settings.Default.USATime = menu12Hour.CheckState;
                 Properties.Settings.Default.WorldTime = menu24Hour.CheckState;
-                Properties.Settings.Default.customAudio = enableAudioBox.Checked;
                 Properties.Settings.Default.AudioFilePath = audioTextBox.Text;
                 Properties.Settings.Default.Save();
             }
