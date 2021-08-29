@@ -163,7 +163,7 @@ namespace ReminderToast
                     if (alarmList.tasks[i].alarmName == toastBox.Items[i].ToString())
                     {
                         //Check today's date matches with the reminder's set date and check if its time to send a toast
-                        if (DateTime.Today == alarmList.tasks[i].alarmDate && DateTime.Now >= alarmList.tasks[i].alarmTime && (DateTime.Now < (alarmList.tasks[i].alarmTime.AddSeconds(60))))
+                        if (DateTime.Today == alarmList.tasks[i].alarmDate && DateTime.Now.TimeOfDay >= alarmList.tasks[i].alarmTime.TimeOfDay && DateTime.Now.TimeOfDay < alarmList.tasks[i].alarmTime.AddSeconds(60).TimeOfDay)
                         {
                             var location = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase) + "\\logo.png");
                             var toast = new ToastContentBuilder().AddText(alarmList.tasks[i].alarmName)
@@ -300,7 +300,7 @@ namespace ReminderToast
                         //}
 
                         //If the reminder was missed due to some reason (I.E: User's computer is off)
-                        else if (DateTime.Today >= alarmList.tasks[i].alarmDate && DateTime.Now > alarmList.tasks[i].alarmTime && (DateTime.Now > (alarmList.tasks[i].alarmTime.AddSeconds(60))))
+                        else if (DateTime.Today >= alarmList.tasks[i].alarmDate && DateTime.Now.TimeOfDay >= alarmList.tasks[i].alarmTime.TimeOfDay && DateTime.Now.TimeOfDay > alarmList.tasks[i].alarmTime.AddSeconds(60).TimeOfDay)
                         {
                             var toast = new ToastContentBuilder().AddText("You missed your reminder!")
                                 .AddText(alarmList.tasks[i].alarmName)
