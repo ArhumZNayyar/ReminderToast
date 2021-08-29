@@ -63,21 +63,6 @@ namespace ReminderToast
             {
                 if (Properties.Settings.Default.TaskList != null)
                 {
-                    //Load Audio Settings
-                    enableAudioBox.Checked = Properties.Settings.Default.customAudio;
-                    audioTextBox.Text = Properties.Settings.Default.AudioFilePath;
-                    if (enableAudioBox.Checked == true)
-                    {
-                        browseButton.Enabled = true;
-                        audioTextBox.Enabled = true;
-                        audioFileName = "file:///" + Properties.Settings.Default.AudioFilePath;
-                        audioFileName = audioFileName.Replace(@"\", "/");
-                        Uri soundUri = new Uri(audioFileName);
-                        #pragma warning disable CS0618 // Type or member is obsolete
-                        WinMediaPlayer.SetUriSource(soundUri);
-                        #pragma warning restore CS0618 // Type or member is obsolete
-                        WinMediaPlayer.Volume = 3 / 100.0f;
-                    }
                     //Set Time Format
                     menu12Hour.CheckState = Properties.Settings.Default.USATime;
                     menu24Hour.CheckState = Properties.Settings.Default.WorldTime;
@@ -198,6 +183,11 @@ namespace ReminderToast
                                     Silent = true
                                 };
                                 toast.AddAudio(audio);
+                                Uri soundUri = new Uri(audioFileName);
+                                #pragma warning disable CS0618 // Type or member is obsolete
+                                WinMediaPlayer.SetUriSource(soundUri);
+                                #pragma warning restore CS0618 // Type or member is obsolete
+                                WinMediaPlayer.Volume = 3 / 100.0f;
                                 WinMediaPlayer.Play();
                             }
                             toast.Show();
