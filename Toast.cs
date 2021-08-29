@@ -273,34 +273,6 @@ namespace ReminderToast
                                     toastBox.SetItemChecked(i, false);
                             }
                         }
-                        //If the reminder was missed due to some reason (I.E: User's computer is off) and its the next day
-                        //else if (alarmList.tasks[i].alarmDate.Day < DateTime.Today.Day) {
-                        //    var newDate = alarmList.tasks[i].alarmDate;
-                        //    if (alarmList.tasks[i].repeatTime == "Day(s)")
-                        //    {
-                        //        alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(alarmList.tasks[i].repeatDuration);
-                        //    }
-                        //    else if (ala)
-                        //    {
-
-                        //    }
-                        //    else
-                        //    { 
-                        //        alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(1);
-                        //    }
-                        //    string splice = toastBox.Items[i].ToString();
-                        //    int spliceIndex = splice.IndexOf("[");
-                        //    if (spliceIndex >= 0)
-                        //        splice = splice.Substring(0, spliceIndex);
-                        //    splice = splice + "[" + alarmList.tasks[i].alarmTime.ToString(format) + "]";
-                        //    toastBox.Items[i] = splice;
-                        //    alarmList.tasks[i].alarmName = splice;
-                        //    var toast = new ToastContentBuilder().AddText("You missed your reminder!")
-                        //        .AddText(alarmList.tasks[i].alarmName)
-                        //        .AddText("The day of the reminder was pushed forward to it's next scheduled day.");
-                        //    toast.Show();
-                        //}
-
                         //If the reminder was missed due to some reason (I.E: User's computer is off)
                         else if (DateTime.Today > alarmList.tasks[i].alarmDate || DateTime.Now.TimeOfDay > alarmList.tasks[i].alarmTime.AddSeconds(60).TimeOfDay)
                         {
