@@ -88,11 +88,10 @@ namespace ReminderToast
                     }
                     toastBox.Update();
                     toastBox.Refresh();
-
-                    // Set selected date to today's date
-                    selectedDateBox.Text = monthCalendar.SelectionRange.Start.Date.ToString(dateFormat); ;
                 }
             }
+            // Set selected date to today's date
+            selectedDateBox.Text = monthCalendar.SelectionRange.Start.Date.ToString(dateFormat);
         }
 
         private void addToastButton_Click(object sender, EventArgs e)
