@@ -138,7 +138,7 @@ namespace ReminderToast
             }
             alarmList.tasks.Add(new Alarms
             {
-                alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString(format) + "]",
+                alarmName = toastName + " [" + monthCalendar.SelectionRange.Start.ToString(dateFormat) + timeControl.Value.ToString(format.Substring(10)) + "]",
                 alarmTime = reminderTime,
                 alarmDate = monthCalendar.SelectionRange.Start,
                 alarmDesc = descriptionBox.Text,
@@ -280,7 +280,7 @@ namespace ReminderToast
                             }
                         }
                         //If the reminder was missed due to some reason (I.E: User's computer is off)
-                        else if (DateTime.Today > alarmList.tasks[i].alarmDate || DateTime.Now.TimeOfDay > alarmList.tasks[i].alarmTime.AddSeconds(60).TimeOfDay)
+                        else if (DateTime.Today.Date > alarmList.tasks[i].alarmDate.Date || DateTime.Today.Date == alarmList.tasks[i].alarmDate.Date && DateTime.Now.TimeOfDay > alarmList.tasks[i].alarmTime.AddSeconds(60).TimeOfDay)
                         {
                             var toast = new ToastContentBuilder().AddText("You missed your reminder!")
                                 .AddText(alarmList.tasks[i].alarmName)
