@@ -138,12 +138,22 @@ namespace ReminderToast
             reminderTime = timeControl.Value;
             long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
             long amount = Convert.ToInt64(Math.Round(repeatTimesBox.Value, 0));
+            // Check if default sound was changed
+            string toastAudio = "NULL";
+            if (enableAudioBox.Checked)
+            {
+                if (!String.IsNullOrEmpty(audioTextBox.Text))
+                {
+                    toastAudio = audioTextBox.Text;
+                }
+            }
             alarmList.tasks.Add(new Alarms
             {
                 alarmName = toastNameBox.Text + " [" + timeControl.Value.ToString(format) + "]",
                 alarmTime = reminderTime,
                 alarmDate = monthCalendar.SelectionRange.Start,
                 alarmDesc = descriptionBox.Text,
+                alarmSound = toastAudio,
                 repeat = repeatCheckBox.Checked,
                 repeatTime = repeatBox.Text,
                 repeatDuration = duration,
@@ -177,8 +187,10 @@ namespace ReminderToast
                             {
                                 supportsCustomAudio = false;
                             }
-                            if (supportsCustomAudio && enableAudioBox.Checked == true)
+                            if (supportsCustomAudio && alarmList.tasks[i].alarmSound != "NULL")
                             {
+                                audioFileName = "file:///" + alarmList.tasks[i].alarmSound;
+                                audioFileName = audioFileName.Replace(@"\", "/");
                                 ToastAudio audio = new ToastAudio()
                                 {
                                     Src = new Uri(audioFileName),
@@ -623,5 +635,6 @@ namespace ReminderToast
         public long repeatAmount { get; set; }
         public long currentRepeatAmount { get; set; }
         public bool enabled { get; set; }
+        public string alarmSound { get; set; }
     }
 }
