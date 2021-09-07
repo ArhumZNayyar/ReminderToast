@@ -57,3 +57,7 @@ Properties/Resources.resx
 Properties/Settings.settings
 Properties/Settings.Designer.cs
 *.settings
+Properties/Resources.Designer.cs
+Properties/Resources.resx
+Properties/Settings.Designer.cs
+Properties/Settings.settings
