@@ -201,6 +201,7 @@ namespace ReminderToast
                                 if (alarmList.tasks[i].repeatTime == "Second(s)")
                                 {
                                     alarmList.tasks[i].alarmTime = DateTime.Now.AddSeconds(alarmList.tasks[i].repeatDuration);
+                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmTime.Date;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
@@ -212,6 +213,7 @@ namespace ReminderToast
                                 else if (alarmList.tasks[i].repeatTime == "Minute(s)")
                                 {
                                     alarmList.tasks[i].alarmTime = DateTime.Now.AddMinutes(alarmList.tasks[i].repeatDuration);
+                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmTime.Date;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
@@ -223,6 +225,8 @@ namespace ReminderToast
                                 else if (alarmList.tasks[i].repeatTime == "Hour(s)")
                                 {
                                     alarmList.tasks[i].alarmTime = DateTime.Now.AddHours(alarmList.tasks[i].repeatDuration);
+                                    // Update the alarm date just in case the alarm time is set to a new date
+                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmTime.Date;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
@@ -234,6 +238,7 @@ namespace ReminderToast
                                 else if (alarmList.tasks[i].repeatTime == "Day(s)")
                                 {
                                     alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(alarmList.tasks[i].repeatDuration);
+                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmTime.Date;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
@@ -245,6 +250,7 @@ namespace ReminderToast
                                 else if (alarmList.tasks[i].repeatTime == "Month(s)")
                                 {
                                     alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddMonths(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
+                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmTime.Date;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
@@ -256,6 +262,7 @@ namespace ReminderToast
                                 else if (alarmList.tasks[i].repeatTime == "Year(s)")
                                 {
                                     alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddYears(Convert.ToInt32(alarmList.tasks[i].repeatDuration));
+                                    alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmTime.Date;
                                     string splice = toastBox.Items[i].ToString();
                                     int spliceIndex = splice.IndexOf("[");
                                     if (spliceIndex >= 0)
@@ -298,7 +305,7 @@ namespace ReminderToast
                                         newTime = newTime.AddHours(alarmList.tasks[i].repeatDuration);
                                     }
                                     //Handle the time first then the date
-                                    while (alarmList.tasks[i].alarmDate < DateTime.Today)
+                                    while (alarmList.tasks[i].alarmDate.Date != newTime.Date)
                                     {
                                         alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(1);
                                     }
