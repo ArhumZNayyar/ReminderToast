@@ -548,7 +548,20 @@ namespace ReminderToast
                     enableAudioBox.Checked = true;
                     browseButton.Enabled = true;
                 }
+                if (alarmList.tasks[modifyIndex].repeat)
+                {
+                    repeatCheckBox.Checked = true;
+                    everyLabel.Visible = !everyLabel.Visible;
+                    numericBox.Visible = !numericBox.Visible;
+                    repeatBox.Visible = !repeatBox.Visible;
+                    repeatTimesBox.Visible = !repeatTimesBox.Visible;
+                    AmountTimesLabel.Visible = !AmountTimesLabel.Visible;
+                    timesHelpLabel.Visible = !timesHelpLabel.Visible;
 
+                    numericBox.Value = alarmList.tasks[modifyIndex].repeatDuration;
+                    repeatBox.Text = alarmList.tasks[modifyIndex].repeatTime;
+                    repeatTimesBox.Value = alarmList.tasks[modifyIndex].repeatAmount;
+                }
                 modifyButton.Enabled = false;
                 addToastButton.Enabled = false;
                 removeToastButton.Enabled = false;
