@@ -179,21 +179,29 @@ namespace ReminderToast
                             }
                             if (supportsCustomAudio && alarmList.tasks[i].alarmSound != "NULL")
                             {
-                                audioFileName = "file:///" + alarmList.tasks[i].alarmSound;
-                                audioFileName = audioFileName.Replace(@"\", "/");
-                                ToastAudio audio = new ToastAudio()
+                                try
                                 {
-                                    Src = new Uri(audioFileName),
-                                    Loop = false,
-                                    Silent = true
-                                };
-                                toast.AddAudio(audio);
-                                Uri soundUri = new Uri(audioFileName);
-                                #pragma warning disable CS0618 // Type or member is obsolete
-                                WinMediaPlayer.SetUriSource(soundUri);
-                                #pragma warning restore CS0618 // Type or member is obsolete
-                                WinMediaPlayer.Volume = 3 / 100.0f;
-                                WinMediaPlayer.Play();
+                                    audioFileName = "file:///" + alarmList.tasks[i].alarmSound;
+                                    audioFileName = audioFileName.Replace(@"\", "/");
+                                    ToastAudio audio = new ToastAudio()
+                                    {
+                                        Src = new Uri(audioFileName),
+                                        Loop = false,
+                                        Silent = true
+                                    };
+                                    toast.AddAudio(audio);
+                                    Uri soundUri = new Uri(audioFileName);
+                                    #pragma warning disable CS0618 // Type or member is obsolete
+                                    WinMediaPlayer.SetUriSource(soundUri);
+                                    #pragma warning restore CS0618 // Type or member is obsolete
+                                    WinMediaPlayer.Volume = 3 / 100.0f;
+                                    WinMediaPlayer.Play();
+                                }
+                                catch (Exception except)
+                                {
+                                    MessageBox.Show("Exception: Could not find/play audio file.\n\nDetails:\n" + except, "Exception caught");
+                                }
+                               
                             }
                             toast.Show();
                             if (alarmList.tasks[i].repeat == true)
@@ -390,12 +398,20 @@ namespace ReminderToast
 
         private void removeToastButton_Click(object sender, EventArgs e)
         {
-            int index = toastBox.SelectedIndex;
-            alarmList.tasks.RemoveAt(index);
-            toastBox.Items.Remove(toastBox.SelectedItem);
-            //Save after removing so it does not persist after restarting the application
-            Properties.Settings.Default.TaskList = alarmList;
-            Properties.Settings.Default.Save();
+            try
+            {
+                int index = toastBox.SelectedIndex;
+                alarmList.tasks.RemoveAt(index);
+                toastBox.Items.Remove(toastBox.SelectedItem);
+                //Save after removing so it does not persist after restarting the application
+                Properties.Settings.Default.TaskList = alarmList;
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show("Exception: No entry was selected to remove.\n\nDetails:\n" + except, "Exception caught");
+            }
+
         }
 
         private void repeatCheckBox_Click(object sender, EventArgs e)
@@ -505,6 +521,7 @@ namespace ReminderToast
             {
                 browseButton.Enabled = false;
                 audioTextBox.Enabled = false;
+                audioTextBox.ResetText();
             }
             else
             {
@@ -515,19 +532,37 @@ namespace ReminderToast
 
         private void modifyButton_Click(object sender, EventArgs e)
         {
-            clearFields();
-            modifyIndex = toastBox.SelectedIndex;
-            modifyName = toastBox.Items[modifyIndex].ToString();
-            toastNameBox.Text = toastBox.Items[modifyIndex].ToString();
-            descriptionBox.Text = alarmList.tasks[modifyIndex].alarmDesc;
+            try
+            {
+                //if (toastBox.SelectedIndex > 0)
+                clearFields();
+                modifyIndex = toastBox.SelectedIndex;
+                modifyName = toastBox.Items[modifyIndex].ToString();
+                toastNameBox.Text = toastBox.Items[modifyIndex].ToString();
+                descriptionBox.Text = alarmList.tasks[modifyIndex].alarmDesc;
+                // Check if this reminder has a custom audio
+                if (alarmList.tasks[modifyIndex].alarmSound != "NULL")
+                {
+                    audioTextBox.Text = alarmList.tasks[modifyIndex].alarmSound;
+                    audioTextBox.Enabled = true;
+                    enableAudioBox.Checked = true;
+                    browseButton.Enabled = true;
+                }
 
-            modifyButton.Enabled = false;
-            addToastButton.Enabled = false;
-            removeToastButton.Enabled = false;
-            confirmChangeButton.Visible = true;
-            discardChangeButton.Visible = true;
-            confirmChangeButton.Enabled = true;
-            discardChangeButton.Enabled = true;
+                modifyButton.Enabled = false;
+                addToastButton.Enabled = false;
+                removeToastButton.Enabled = false;
+                confirmChangeButton.Visible = true;
+                discardChangeButton.Visible = true;
+                confirmChangeButton.Enabled = true;
+                discardChangeButton.Enabled = true;
+            }
+
+            catch (Exception except)
+            {
+                MessageBox.Show("Exception: No entry was selected to modify.\n\nDetails:\n" + except , "Exception caught");
+            }
+            
         }
 
         private void discardChangeButton_Click(object sender, EventArgs e)
@@ -547,31 +582,55 @@ namespace ReminderToast
         private void confirmChangeButton_Click(object sender, EventArgs e)
         {
             //Post the modifications to the selected reminder
-            toastBox.Items[modifyIndex] = toastNameBox.Text + " [" + monthCalendar.SelectionRange.Start.ToString(dateFormat) 
-                + timeControl.Value.ToString(format.Substring(10)) + "]";
-            alarmList.tasks[modifyIndex].alarmName = toastNameBox.Text + " [" + 
-                monthCalendar.SelectionRange.Start.ToString(dateFormat) + timeControl.Value.ToString(format.Substring(10)) + "]";
-            alarmList.tasks[modifyIndex].alarmDesc = descriptionBox.Text;
-            alarmList.tasks[modifyIndex].alarmTime = timeControl.Value;
-            alarmList.tasks[modifyIndex].alarmDate = monthCalendar.SelectionRange.Start;
-            long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
-            long amount = Convert.ToInt64(Math.Round(repeatTimesBox.Value, 0));
-            alarmList.tasks[modifyIndex].repeat = repeatCheckBox.Checked;
-            alarmList.tasks[modifyIndex].repeatTime = repeatBox.Text;
-            alarmList.tasks[modifyIndex].repeatDuration = duration;
-            alarmList.tasks[modifyIndex].repeatAmount = amount;
-            alarmList.tasks[modifyIndex].currentRepeatAmount = 0;
-            alarmList.tasks[modifyIndex].enabled = true;
-            toastBox.SetItemChecked(modifyIndex, true);
-            //Reset the fields to their original state
-            confirmChangeButton.Visible = false;
-            discardChangeButton.Visible = false;
-            confirmChangeButton.Enabled = false;
-            discardChangeButton.Enabled = false;
-            modifyButton.Enabled = true;
-            addToastButton.Enabled = true;
-            removeToastButton.Enabled = true;
-            clearFields();
+            try
+            {
+                toastBox.Items[modifyIndex] = toastNameBox.Text + " [" + monthCalendar.SelectionRange.Start.ToString(dateFormat)
+               + timeControl.Value.ToString(format.Substring(10)) + "]";
+                alarmList.tasks[modifyIndex].alarmName = toastNameBox.Text + " [" +
+                    monthCalendar.SelectionRange.Start.ToString(dateFormat) + timeControl.Value.ToString(format.Substring(10)) + "]";
+                alarmList.tasks[modifyIndex].alarmDesc = descriptionBox.Text;
+                alarmList.tasks[modifyIndex].alarmTime = timeControl.Value;
+                if (enableAudioBox.Checked)
+                {
+                    if (!String.IsNullOrEmpty(audioTextBox.Text))
+                    {
+                        alarmList.tasks[modifyIndex].alarmSound = audioTextBox.Text;
+                    }
+                    else
+                    {
+                        alarmList.tasks[modifyIndex].alarmSound = "NULL";
+                    }
+
+                }
+                else
+                {
+                    alarmList.tasks[modifyIndex].alarmSound = "NULL";
+                }
+                alarmList.tasks[modifyIndex].alarmDate = monthCalendar.SelectionRange.Start;
+                long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
+                long amount = Convert.ToInt64(Math.Round(repeatTimesBox.Value, 0));
+                alarmList.tasks[modifyIndex].repeat = repeatCheckBox.Checked;
+                alarmList.tasks[modifyIndex].repeatTime = repeatBox.Text;
+                alarmList.tasks[modifyIndex].repeatDuration = duration;
+                alarmList.tasks[modifyIndex].repeatAmount = amount;
+                alarmList.tasks[modifyIndex].currentRepeatAmount = 0;
+                alarmList.tasks[modifyIndex].enabled = true;
+                toastBox.SetItemChecked(modifyIndex, true);
+                //Reset the fields to their original state
+                confirmChangeButton.Visible = false;
+                discardChangeButton.Visible = false;
+                confirmChangeButton.Enabled = false;
+                discardChangeButton.Enabled = false;
+                modifyButton.Enabled = true;
+                addToastButton.Enabled = true;
+                removeToastButton.Enabled = true;
+                clearFields();
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show("Exception: Invalid modifications.\n\nDetails:\n" + except, "Exception caught");
+            }
+           
         }
 
         private void monthCalendar_DateSelected(object sender, DateRangeEventArgs e)
