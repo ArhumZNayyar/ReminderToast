@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Toolkit.Uwp.Notifications;
+using Microsoft.Win32;
 using Windows.Foundation.Metadata;
 using Windows.Media.Playback;
 using Windows.System.Profile;
@@ -419,6 +420,7 @@ namespace ReminderToast
                 Properties.Settings.Default.USATime = menu12Hour.CheckState;
                 Properties.Settings.Default.WorldTime = menu24Hour.CheckState;
                 Properties.Settings.Default.AudioFilePath = audioTextBox.Text;
+                Properties.Settings.Default.autoRun = startOnSystemBootToolStripMenuItem.Checked;
                 Properties.Settings.Default.Save();
             }
         }
@@ -613,6 +615,41 @@ namespace ReminderToast
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void startOnSystemBootToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Set the check state
+            startOnSystemBootToolStripMenuItem.Checked = !startOnSystemBootToolStripMenuItem.Checked;
+            if (startOnSystemBootToolStripMenuItem.Checked)
+            {
+                // Configure for current user only
+                string subKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+                string subValue = "ReminderToast";
+                try
+                {   // Apply the registry key to Window's "Run on start-up" registry
+                    RegistryKey key = Registry.CurrentUser.OpenSubKey(subKey, true);
+                    key.SetValue(subValue, Application.ExecutablePath.ToString());
+                }
+                catch(Exception except)
+                {
+                    MessageBox.Show("Exception: " + except, "Exception caught");
+                }
+            }
+            else
+            {
+                string subKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+                try
+                {
+                    // Delete the value by name. DO NOT DELETE SUBTREE / SUBKEY
+                    RegistryKey key = Registry.CurrentUser.OpenSubKey(subKey, true);
+                    key.DeleteValue("ReminderToast");
+                }
+                catch (Exception except)
+                {
+                    MessageBox.Show("Exception: " + except, "Exception caught");
+                }
+            }
         }
     } //End of Toast class
 

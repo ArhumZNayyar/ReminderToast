@@ -39,9 +39,11 @@
             this.repeatBox = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu12Hour = new System.Windows.Forms.ToolStripMenuItem();
             this.menu24Hour = new System.Windows.Forms.ToolStripMenuItem();
+            this.startOnSystemBootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskLabel = new System.Windows.Forms.Label();
@@ -166,12 +168,21 @@
             // menuToolStripMenuItem
             // 
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.formatToolStripMenuItem,
+            this.settingsToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.formatToolStripMenuItem,
+            this.startOnSystemBootToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // formatToolStripMenuItem
             // 
@@ -179,7 +190,7 @@
             this.menu12Hour,
             this.menu24Hour});
             this.formatToolStripMenuItem.Name = "formatToolStripMenuItem";
-            this.formatToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.formatToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.formatToolStripMenuItem.Text = "Format";
             // 
             // menu12Hour
@@ -199,17 +210,25 @@
             this.menu24Hour.Text = "24-Hour";
             this.menu24Hour.Click += new System.EventHandler(this.menu24Hour_Click);
             // 
+            // startOnSystemBootToolStripMenuItem
+            // 
+            this.startOnSystemBootToolStripMenuItem.Checked = global::ReminderToast.Properties.Settings.Default.autoRun;
+            this.startOnSystemBootToolStripMenuItem.Name = "startOnSystemBootToolStripMenuItem";
+            this.startOnSystemBootToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.startOnSystemBootToolStripMenuItem.Text = "Start on System Boot";
+            this.startOnSystemBootToolStripMenuItem.Click += new System.EventHandler(this.startOnSystemBootToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -575,9 +594,6 @@
         private System.Windows.Forms.CheckBox repeatCheckBox;
         private System.Windows.Forms.Label everyLabel;
         private System.Windows.Forms.NumericUpDown numericBox;
-        private System.Windows.Forms.ToolStripMenuItem formatToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem menu12Hour;
-        private System.Windows.Forms.ToolStripMenuItem menu24Hour;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.OpenFileDialog audioDialog;
         private System.Windows.Forms.Button browseButton;
@@ -600,6 +616,11 @@
         private System.Windows.Forms.ContextMenuStrip notifyContextMenu;
         private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem formatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menu12Hour;
+        private System.Windows.Forms.ToolStripMenuItem menu24Hour;
+        private System.Windows.Forms.ToolStripMenuItem startOnSystemBootToolStripMenuItem;
     }
 }
 
