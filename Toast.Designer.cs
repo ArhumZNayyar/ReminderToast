@@ -75,10 +75,15 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.notifyContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label5 = new System.Windows.Forms.Label();
+            this.playButton = new System.Windows.Forms.Button();
+            this.volumeValueLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).BeginInit();
             this.notifyContextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // toastBox
@@ -88,7 +93,7 @@
             this.toastBox.HorizontalScrollbar = true;
             this.toastBox.Location = new System.Drawing.Point(12, 38);
             this.toastBox.Name = "toastBox";
-            this.toastBox.Size = new System.Drawing.Size(319, 412);
+            this.toastBox.Size = new System.Drawing.Size(319, 446);
             this.toastBox.TabIndex = 0;
             // 
             // timeControl
@@ -103,7 +108,7 @@
             // addToastButton
             // 
             this.addToastButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.addToastButton.Location = new System.Drawing.Point(337, 425);
+            this.addToastButton.Location = new System.Drawing.Point(334, 461);
             this.addToastButton.Name = "addToastButton";
             this.addToastButton.Size = new System.Drawing.Size(75, 23);
             this.addToastButton.TabIndex = 5;
@@ -113,7 +118,7 @@
             // 
             // removeToastButton
             // 
-            this.removeToastButton.Location = new System.Drawing.Point(454, 425);
+            this.removeToastButton.Location = new System.Drawing.Point(454, 461);
             this.removeToastButton.Name = "removeToastButton";
             this.removeToastButton.Size = new System.Drawing.Size(75, 23);
             this.removeToastButton.TabIndex = 6;
@@ -181,7 +186,7 @@
             this.formatToolStripMenuItem,
             this.startOnSystemBootToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // formatToolStripMenuItem
@@ -221,14 +226,14 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -344,7 +349,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(497, 363);
+            this.label2.Location = new System.Drawing.Point(512, 363);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 24;
@@ -369,13 +374,13 @@
             this.audioTextBox.Enabled = false;
             this.audioTextBox.Location = new System.Drawing.Point(426, 379);
             this.audioTextBox.Name = "audioTextBox";
-            this.audioTextBox.Size = new System.Drawing.Size(206, 23);
+            this.audioTextBox.Size = new System.Drawing.Size(236, 23);
             this.audioTextBox.TabIndex = 22;
             this.audioTextBox.Text = global::ReminderToast.Properties.Settings.Default.AudioFilePath;
             // 
             // modifyButton
             // 
-            this.modifyButton.Location = new System.Drawing.Point(571, 425);
+            this.modifyButton.Location = new System.Drawing.Point(572, 461);
             this.modifyButton.Name = "modifyButton";
             this.modifyButton.Size = new System.Drawing.Size(75, 23);
             this.modifyButton.TabIndex = 25;
@@ -386,7 +391,7 @@
             // confirmChangeButton
             // 
             this.confirmChangeButton.Enabled = false;
-            this.confirmChangeButton.Location = new System.Drawing.Point(337, 425);
+            this.confirmChangeButton.Location = new System.Drawing.Point(334, 461);
             this.confirmChangeButton.Name = "confirmChangeButton";
             this.confirmChangeButton.Size = new System.Drawing.Size(75, 23);
             this.confirmChangeButton.TabIndex = 26;
@@ -398,7 +403,7 @@
             // discardChangeButton
             // 
             this.discardChangeButton.Enabled = false;
-            this.discardChangeButton.Location = new System.Drawing.Point(454, 425);
+            this.discardChangeButton.Location = new System.Drawing.Point(454, 461);
             this.discardChangeButton.Name = "discardChangeButton";
             this.discardChangeButton.Size = new System.Drawing.Size(75, 23);
             this.discardChangeButton.TabIndex = 27;
@@ -453,7 +458,7 @@
             // dividerLabel
             // 
             this.dividerLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dividerLabel.Location = new System.Drawing.Point(337, 412);
+            this.dividerLabel.Location = new System.Drawing.Point(337, 447);
             this.dividerLabel.Name = "dividerLabel";
             this.dividerLabel.Size = new System.Drawing.Size(323, 2);
             this.dividerLabel.TabIndex = 33;
@@ -515,13 +520,59 @@
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
+            // trackBar1
+            // 
+            this.trackBar1.AutoSize = false;
+            this.trackBar1.Enabled = false;
+            this.trackBar1.Location = new System.Drawing.Point(334, 424);
+            this.trackBar1.Maximum = 20;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(120, 20);
+            this.trackBar1.TabIndex = 37;
+            this.trackBar1.TickFrequency = 10;
+            this.trackBar1.Value = 10;
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(334, 408);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(42, 13);
+            this.label5.TabIndex = 38;
+            this.label5.Text = "Volume";
+            // 
+            // playButton
+            // 
+            this.playButton.Enabled = false;
+            this.playButton.Location = new System.Drawing.Point(500, 419);
+            this.playButton.Name = "playButton";
+            this.playButton.Size = new System.Drawing.Size(75, 23);
+            this.playButton.TabIndex = 39;
+            this.playButton.Text = "Play";
+            this.playButton.UseVisualStyleBackColor = true;
+            this.playButton.Click += new System.EventHandler(this.playButton_Click);
+            // 
+            // volumeValueLabel
+            // 
+            this.volumeValueLabel.AutoSize = true;
+            this.volumeValueLabel.Location = new System.Drawing.Point(451, 424);
+            this.volumeValueLabel.Name = "volumeValueLabel";
+            this.volumeValueLabel.Size = new System.Drawing.Size(33, 13);
+            this.volumeValueLabel.TabIndex = 40;
+            this.volumeValueLabel.Text = "100%";
+            // 
             // Toast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(668, 456);
+            this.ClientSize = new System.Drawing.Size(668, 492);
+            this.Controls.Add(this.volumeValueLabel);
+            this.Controls.Add(this.playButton);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.timesHelpLabel);
             this.Controls.Add(this.AmountTimesLabel);
             this.Controls.Add(this.repeatTimesBox);
@@ -569,6 +620,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).EndInit();
             this.notifyContextMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -621,6 +673,10 @@
         private System.Windows.Forms.ToolStripMenuItem menu12Hour;
         private System.Windows.Forms.ToolStripMenuItem menu24Hour;
         private System.Windows.Forms.ToolStripMenuItem startOnSystemBootToolStripMenuItem;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button playButton;
+        private System.Windows.Forms.Label volumeValueLabel;
     }
 }
 

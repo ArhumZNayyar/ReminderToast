@@ -30,6 +30,7 @@ namespace ReminderToast
         string audioFileName = "";
         string modifyName = "";
         int modifyIndex = 0;
+        int wmpVolume = 10;
 
         public Toast()
         {
@@ -55,6 +56,9 @@ namespace ReminderToast
             enableAudioBox.Checked = false;
             browseButton.Enabled = false;
             audioTextBox.ResetText();
+            trackBar1.Value = 10;
+            trackBar1.Enabled = false;
+            playButton.Enabled = false;
             monthCalendar.SelectionRange.Start = DateTime.Today;
             selectedDateBox.Text = monthCalendar.SelectionRange.Start.Date.ToString(dateFormat);
         }
@@ -144,6 +148,7 @@ namespace ReminderToast
                 alarmDate = monthCalendar.SelectionRange.Start,
                 alarmDesc = descriptionBox.Text,
                 alarmSound = toastAudio,
+                alarmVolume = wmpVolume,
                 repeat = repeatCheckBox.Checked,
                 repeatTime = repeatBox.Text,
                 repeatDuration = duration,
@@ -194,7 +199,7 @@ namespace ReminderToast
                                     #pragma warning disable CS0618 // Type or member is obsolete
                                     WinMediaPlayer.SetUriSource(soundUri);
                                     #pragma warning restore CS0618 // Type or member is obsolete
-                                    WinMediaPlayer.Volume = 3 / 100.0f;
+                                    WinMediaPlayer.Volume = alarmList.tasks[i].alarmVolume / 100.0f;
                                     WinMediaPlayer.Play();
                                 }
                                 catch (Exception except)
@@ -506,7 +511,7 @@ namespace ReminderToast
                 #pragma warning disable CS0618 // Type or member is obsolete
                 WinMediaPlayer.SetUriSource(soundUri);
                 #pragma warning restore CS0618 // Type or member is obsolete
-                WinMediaPlayer.Volume = 3 / 100.0f;
+                WinMediaPlayer.Volume = wmpVolume / 100.0f;
             }
             else
             {
@@ -520,12 +525,17 @@ namespace ReminderToast
             {
                 browseButton.Enabled = false;
                 audioTextBox.Enabled = false;
+                trackBar1.Enabled = false;
+                trackBar1.Value = 10;
+                playButton.Enabled = false;
                 audioTextBox.ResetText();
             }
             else
             {
                 browseButton.Enabled = true;
                 audioTextBox.Enabled = true;
+                trackBar1.Enabled = true;
+                playButton.Enabled = true;
             }
         }
 
@@ -722,6 +732,35 @@ namespace ReminderToast
                 }
             }
         }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            volumeValueLabel.Text = (trackBar1.Value * 10).ToString() + "%";
+            wmpVolume = trackBar1.Value;
+        }
+
+        private void playButton_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(audioTextBox.Text)) {
+                try
+                {
+                    Uri soundUri = new Uri(audioFileName);
+                    #pragma warning disable CS0618 // Type or member is obsolete
+                    WinMediaPlayer.SetUriSource(soundUri);
+                    #pragma warning restore CS0618 // Type or member is obsolete
+                    WinMediaPlayer.Volume = wmpVolume / 100.0f;
+                    WinMediaPlayer.Play();
+                }
+                catch (Exception except)
+                {
+                    MessageBox.Show("Exception: Could not find/play audio file.\n\nDetails:\n" + except, "Exception caught");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Exception: No audio file has been selected.", "Exception caught");
+            }
+        }
     } //End of Toast class
 
     [SettingsSerializeAs(SettingsSerializeAs.Xml)]
@@ -744,5 +783,6 @@ namespace ReminderToast
         public long currentRepeatAmount { get; set; }
         public bool enabled { get; set; }
         public string alarmSound { get; set; }
+        public int alarmVolume { get; set; }
     }
 }
