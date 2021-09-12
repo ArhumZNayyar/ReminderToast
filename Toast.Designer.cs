@@ -79,6 +79,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.playButton = new System.Windows.Forms.Button();
             this.volumeValueLabel = new System.Windows.Forms.Label();
+            this.stopButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).BeginInit();
@@ -562,6 +563,17 @@
             this.volumeValueLabel.TabIndex = 40;
             this.volumeValueLabel.Text = "100%";
             // 
+            // stopButton
+            // 
+            this.stopButton.Enabled = false;
+            this.stopButton.Location = new System.Drawing.Point(586, 419);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(75, 23);
+            this.stopButton.TabIndex = 41;
+            this.stopButton.Text = "Stop";
+            this.stopButton.UseVisualStyleBackColor = true;
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
             // Toast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -569,6 +581,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(668, 492);
+            this.Controls.Add(this.stopButton);
             this.Controls.Add(this.volumeValueLabel);
             this.Controls.Add(this.playButton);
             this.Controls.Add(this.label5);
@@ -677,6 +690,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button playButton;
         private System.Windows.Forms.Label volumeValueLabel;
+        private System.Windows.Forms.Button stopButton;
     }
 }
 

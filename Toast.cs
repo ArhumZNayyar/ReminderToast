@@ -59,6 +59,7 @@ namespace ReminderToast
             trackBar1.Value = 10;
             trackBar1.Enabled = false;
             playButton.Enabled = false;
+            stopButton.Enabled = false;
             monthCalendar.SelectionRange.Start = DateTime.Today;
             selectedDateBox.Text = monthCalendar.SelectionRange.Start.Date.ToString(dateFormat);
         }
@@ -531,6 +532,7 @@ namespace ReminderToast
                 trackBar1.Enabled = false;
                 trackBar1.Value = 10;
                 playButton.Enabled = false;
+                stopButton.Enabled = false;
                 audioTextBox.ResetText();
             }
             else
@@ -539,6 +541,7 @@ namespace ReminderToast
                 audioTextBox.Enabled = true;
                 trackBar1.Enabled = true;
                 playButton.Enabled = true;
+                stopButton.Enabled = true;
             }
         }
 
@@ -762,6 +765,25 @@ namespace ReminderToast
                 catch (Exception except)
                 {
                     MessageBox.Show("Exception: Could not find/play audio file.\n\nDetails:\n" + except, "Exception caught");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Exception: No audio file has been selected.", "Exception caught");
+            }
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(audioTextBox.Text))
+            {
+                try
+                {
+                    WinMediaPlayer.Pause();
+                }
+                catch (Exception except)
+                {
+                    MessageBox.Show("Exception: Could not stop the audio file.\n\nDetails:\n" + except, "Exception caught");
                 }
             }
             else
