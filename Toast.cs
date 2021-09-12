@@ -121,9 +121,11 @@ namespace ReminderToast
             }
 
             string toastName = "NULL";
+            string internalName = "NULL";
             if (!String.IsNullOrEmpty(toastNameBox.Text))
             {
                 toastName = toastNameBox.Text;
+                internalName = toastNameBox.Text;
             }
             toastBox.Items.Add(toastName + " ["  + monthCalendar.SelectionRange.Start.ToString(dateFormat) + timeControl.Value.ToString(format.Substring(10)) + "]");
             //Set entry to a checked state
@@ -144,6 +146,7 @@ namespace ReminderToast
             alarmList.tasks.Add(new Alarms
             {
                 alarmName = toastName + " [" + monthCalendar.SelectionRange.Start.ToString(dateFormat) + timeControl.Value.ToString(format.Substring(10)) + "]",
+                origName = internalName,
                 alarmTime = reminderTime,
                 alarmDate = monthCalendar.SelectionRange.Start,
                 alarmDesc = descriptionBox.Text,
@@ -547,7 +550,7 @@ namespace ReminderToast
                 clearFields();
                 modifyIndex = toastBox.SelectedIndex;
                 modifyName = toastBox.Items[modifyIndex].ToString();
-                toastNameBox.Text = toastBox.Items[modifyIndex].ToString();
+                toastNameBox.Text = alarmList.tasks[modifyIndex].origName;
                 descriptionBox.Text = alarmList.tasks[modifyIndex].alarmDesc;
                 // Check if this reminder has a custom audio
                 if (alarmList.tasks[modifyIndex].alarmSound != "NULL")
@@ -609,6 +612,7 @@ namespace ReminderToast
             //Post the modifications to the selected reminder
             try
             {
+                alarmList.tasks[modifyIndex].origName = toastNameBox.Text;
                 toastBox.Items[modifyIndex] = toastNameBox.Text + " [" + monthCalendar.SelectionRange.Start.ToString(dateFormat)
                + timeControl.Value.ToString(format.Substring(10)) + "]";
                 alarmList.tasks[modifyIndex].alarmName = toastNameBox.Text + " [" +
@@ -788,5 +792,6 @@ namespace ReminderToast
         public bool enabled { get; set; }
         public string alarmSound { get; set; }
         public int alarmVolume { get; set; }
+        public string origName { get; set; }
     }
 }
