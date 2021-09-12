@@ -556,6 +556,9 @@ namespace ReminderToast
                     audioTextBox.Enabled = true;
                     enableAudioBox.Checked = true;
                     browseButton.Enabled = true;
+                    trackBar1.Enabled = true;
+                    playButton.Enabled = true;
+                    trackBar1.Value = alarmList.tasks[modifyIndex].alarmVolume;
                 }
                 if (alarmList.tasks[modifyIndex].repeat)
                 {
@@ -617,6 +620,7 @@ namespace ReminderToast
                     if (!String.IsNullOrEmpty(audioTextBox.Text))
                     {
                         alarmList.tasks[modifyIndex].alarmSound = audioTextBox.Text;
+                        alarmList.tasks[modifyIndex].alarmVolume = trackBar1.Value;
                     }
                     else
                     {
