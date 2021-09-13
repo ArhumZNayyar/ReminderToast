@@ -176,7 +176,8 @@ namespace ReminderToast
                         // Check today's date matches with the reminder's set date and check if its time to send a toast
                         if (DateTime.Today == alarmList.tasks[i].alarmDate && DateTime.Now.TimeOfDay >= alarmList.tasks[i].alarmTime.TimeOfDay && DateTime.Now.TimeOfDay < alarmList.tasks[i].alarmTime.AddSeconds(60).TimeOfDay)
                         {
-                            var location = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase) + "\\logo.png");
+                            // var location = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase) + "\\logo.png");
+                            var location = new Uri(Directory.GetCurrentDirectory() + "/logo.png");
                             // Construct the toast notification
                             var toast = new ToastContentBuilder().AddText(alarmList.tasks[i].alarmName)
                                 .AddText(alarmList.tasks[i].alarmDesc)
@@ -194,7 +195,8 @@ namespace ReminderToast
                                     }
                                 })
                                 .AddButton(new ToastButtonSnooze() { SelectionBoxId = "snoozeTime" })
-                                .AddButton(new ToastButtonDismiss());//.AddAppLogoOverride(location, ToastGenericAppLogoCrop.Circle);
+                                .AddButton(new ToastButtonDismiss())
+                                .AddAppLogoOverride(location, ToastGenericAppLogoCrop.Circle);
 
                             bool supportsCustomAudio = true;
                             // Check if Windows Version is above build 1511. If not, do not play custom audio.
