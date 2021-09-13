@@ -25,8 +25,8 @@ namespace ReminderToast
         DateTimePicker newClock = new DateTimePicker();
         DateTime reminderTime;
         MediaPlayer WinMediaPlayer = new MediaPlayer();
-        string format = "MM/dd/yyyy hh:mm:ss tt"; //USA
-        string dateFormat = "MM/dd/yyyy"; //USA
+        string format = "MM/dd/yyyy hh:mm:ss tt"; // USA
+        string dateFormat = "MM/dd/yyyy"; // USA
         string audioFileName = "";
         string modifyName = "";
         int modifyIndex = 0;
@@ -39,7 +39,7 @@ namespace ReminderToast
 
         private void clearFields()
         {
-            //Clear all fields
+            // Clear all fields & reset values to default
             toastNameBox.Clear();
             descriptionBox.Clear();
             timeControl.ResetText();
@@ -74,7 +74,7 @@ namespace ReminderToast
             {
                 if (Properties.Settings.Default.TaskList != null)
                 {
-                    //Set Time Format
+                    // Set Time Format
                     menu12Hour.CheckState = Properties.Settings.Default.USATime;
                     menu24Hour.CheckState = Properties.Settings.Default.WorldTime;
                     if (menu12Hour.Checked == true)
@@ -87,7 +87,7 @@ namespace ReminderToast
                         format = "dd/MM/yyyy HH:mm:ss";
                         dateFormat = "dd/MM/yyyy";
                     }
-                    //Load reminders
+                    // Load reminders
                     alarmList = Properties.Settings.Default.TaskList;
                     for (int i = 0; i < alarmList.tasks.Count(); i++)
                     {
@@ -129,9 +129,9 @@ namespace ReminderToast
                 internalName = toastNameBox.Text;
             }
             toastBox.Items.Add(toastName + " ["  + monthCalendar.SelectionRange.Start.ToString(dateFormat) + timeControl.Value.ToString(format.Substring(10)) + "]");
-            //Set entry to a checked state
+            // Set entry to a checked state
             toastBox.SetItemChecked(toastBox.Items.Count - 1, true);
-            //Get the time and other details
+            // Get the time and other details
             reminderTime = timeControl.Value;
             long duration = Convert.ToInt64(Math.Round(numericBox.Value, 0));
             long amount = Convert.ToInt64(Math.Round(repeatTimesBox.Value, 0));
@@ -168,17 +168,34 @@ namespace ReminderToast
             var yesterday = DateTime.Today.AddDays(-1);
             for (int i = 0; i < toastBox.Items.Count; i++)
             {
-                //Toast will only be sent if the entry is enabled (checked)
+                // Toast will only be sent if the entry is enabled (checked)
                 if (toastBox.GetItemChecked(i) == true)
                 {
                     if (alarmList.tasks[i].alarmName == toastBox.Items[i].ToString())
                     {
-                        //Check today's date matches with the reminder's set date and check if its time to send a toast
+                        // Check today's date matches with the reminder's set date and check if its time to send a toast
                         if (DateTime.Today == alarmList.tasks[i].alarmDate && DateTime.Now.TimeOfDay >= alarmList.tasks[i].alarmTime.TimeOfDay && DateTime.Now.TimeOfDay < alarmList.tasks[i].alarmTime.AddSeconds(60).TimeOfDay)
                         {
                             var location = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase) + "\\logo.png");
+                            // Construct the toast notification
                             var toast = new ToastContentBuilder().AddText(alarmList.tasks[i].alarmName)
-                                .AddText(alarmList.tasks[i].alarmDesc);//.AddAppLogoOverride(location, ToastGenericAppLogoCrop.Circle);
+                                .AddText(alarmList.tasks[i].alarmDesc)
+                                .SetToastScenario(ToastScenario.Reminder)
+                                .AddToastInput(new ToastSelectionBox("snoozeTime")
+                                {
+                                    DefaultSelectionBoxItemId = "1",
+                                    Items =
+                                    {
+                                        new ToastSelectionBoxItem("1", "1 minute"),
+                                        new ToastSelectionBoxItem("2", "2 minutes"),
+                                        new ToastSelectionBoxItem("5", "5 minutes"),
+                                        new ToastSelectionBoxItem("10", "10 minutes"),
+                                        new ToastSelectionBoxItem("30", "30 minutes")
+                                    }
+                                })
+                                .AddButton(new ToastButtonSnooze() { SelectionBoxId = "snoozeTime" })
+                                .AddButton(new ToastButtonDismiss());//.AddAppLogoOverride(location, ToastGenericAppLogoCrop.Circle);
+
                             bool supportsCustomAudio = true;
                             // Check if Windows Version is above build 1511. If not, do not play custom audio.
                             if (AnalyticsInfo.VersionInfo.DeviceFamily.Equals("Windows.Desktop")
@@ -215,7 +232,7 @@ namespace ReminderToast
                             toast.Show();
                             if (alarmList.tasks[i].repeat == true)
                             {
-                                //If its a recurring reminder update the time and splice the display text to match the new time
+                                // If its a recurring reminder update the time and splice the display text to match the new time
                                 if (alarmList.tasks[i].repeatTime == "Second(s)")
                                 {
                                     alarmList.tasks[i].alarmTime = DateTime.Now.AddSeconds(alarmList.tasks[i].repeatDuration);
@@ -291,19 +308,19 @@ namespace ReminderToast
                             }
                             else
                             {
-                                toastBox.SetItemChecked(i, false); //Does not repeat so uncheck the entry
+                                toastBox.SetItemChecked(i, false); // Does not repeat so uncheck the entry
                             }
-                            //Increment the current repeat amount value if it's not infinite (0)
-                            //The count will still increment even if it was due to missing the reminder
+                            // Increment the current repeat amount value if it's not infinite (0)
+                            // The count will still increment even if it was due to missing the reminder
                             if (alarmList.tasks[i].repeatAmount != 0)
                             {
                                 alarmList.tasks[i].currentRepeatAmount++;
-                                //If the amount has reached it's desired value, disable the reminder
+                                // If the amount has reached it's desired value, disable the reminder
                                 if (alarmList.tasks[i].currentRepeatAmount >= alarmList.tasks[i].repeatAmount)
                                     toastBox.SetItemChecked(i, false);
                             }
                         }
-                        //If the reminder was missed due to some reason (I.E: User's computer is off)
+                        // If the reminder was missed due to some reason (I.E: User's computer is off)
                         else if (DateTime.Today.Date > alarmList.tasks[i].alarmDate.Date || DateTime.Today.Date == alarmList.tasks[i].alarmDate.Date && DateTime.Now.TimeOfDay > alarmList.tasks[i].alarmTime.AddSeconds(60).TimeOfDay)
                         {
                             var toast = new ToastContentBuilder().AddText("You missed your reminder!")
@@ -316,12 +333,12 @@ namespace ReminderToast
                                 if (alarmList.tasks[i].repeatTime == "Hour(s)")
                                 {
                                     var newTime = alarmList.tasks[i].alarmTime;
-                                    //Keep incrementing the time by its specified value until it is past the current time
+                                    // Keep incrementing the time by its specified value until it is past the current time
                                     while (newTime < DateTime.Now)
                                     {
                                         newTime = newTime.AddHours(alarmList.tasks[i].repeatDuration);
                                     }
-                                    //Handle the time first then the date
+                                    // Handle the time first then the date
                                     while (alarmList.tasks[i].alarmDate.Date != newTime.Date)
                                     {
                                         alarmList.tasks[i].alarmDate = alarmList.tasks[i].alarmDate.AddDays(1);
@@ -382,19 +399,19 @@ namespace ReminderToast
                                 }
                                 else
                                 {
-                                    toastBox.SetItemChecked(i, false); //Recurrence is not above an hour so disable/uncheck it.
+                                    toastBox.SetItemChecked(i, false); // Recurrence is not above an hour so disable/uncheck it.
                                 }
                             }
                             else
                             {
-                                toastBox.SetItemChecked(i, false); //Does not repeat so uncheck the entry
+                                toastBox.SetItemChecked(i, false); // Does not repeat so uncheck the entry
                             }
-                            //Increment the current repeat amount value if it's not infinite (0)
-                            //The count will still increment even if it was due to missing the reminder
+                            // Increment the current repeat amount value if it's not infinite (0)
+                            // The count will still increment even if it was due to missing the reminder
                             if (alarmList.tasks[i].repeatAmount != 0)
                             {
                                 alarmList.tasks[i].currentRepeatAmount++;
-                                //If the amount has reached it's desired value, disable the reminder
+                                // If the amount has reached it's desired value, disable the reminder
                                 if (alarmList.tasks[i].currentRepeatAmount >= alarmList.tasks[i].repeatAmount)
                                     toastBox.SetItemChecked(i, false);
                             }
@@ -411,7 +428,7 @@ namespace ReminderToast
                 int index = toastBox.SelectedIndex;
                 alarmList.tasks.RemoveAt(index);
                 toastBox.Items.Remove(toastBox.SelectedItem);
-                //Save after removing so it does not persist after restarting the application
+                // Save after removing so it does not persist after restarting the application
                 Properties.Settings.Default.TaskList = alarmList;
                 Properties.Settings.Default.Save();
             }
@@ -549,7 +566,7 @@ namespace ReminderToast
         {
             try
             {
-                //if (toastBox.SelectedIndex > 0)
+                // if (toastBox.SelectedIndex > 0)
                 clearFields();
                 modifyIndex = toastBox.SelectedIndex;
                 modifyName = toastBox.Items[modifyIndex].ToString();
@@ -598,7 +615,7 @@ namespace ReminderToast
 
         private void discardChangeButton_Click(object sender, EventArgs e)
         {
-            //Discard changes simply just resets the input fields
+            // Discard changes simply just resets the input fields
             confirmChangeButton.Visible = false;
             discardChangeButton.Visible = false;
             confirmChangeButton.Enabled = false;
@@ -612,7 +629,7 @@ namespace ReminderToast
 
         private void confirmChangeButton_Click(object sender, EventArgs e)
         {
-            //Post the modifications to the selected reminder
+            // Post the modifications to the selected reminder
             try
             {
                 alarmList.tasks[modifyIndex].origName = toastNameBox.Text;
@@ -649,7 +666,7 @@ namespace ReminderToast
                 alarmList.tasks[modifyIndex].currentRepeatAmount = 0;
                 alarmList.tasks[modifyIndex].enabled = true;
                 toastBox.SetItemChecked(modifyIndex, true);
-                //Reset the fields to their original state
+                // Reset the fields to their original state
                 confirmChangeButton.Visible = false;
                 discardChangeButton.Visible = false;
                 confirmChangeButton.Enabled = false;
@@ -678,7 +695,7 @@ namespace ReminderToast
 
         private void Toast_Resize(object sender, EventArgs e)
         {
-            //If the form was minimized, set it to the System Tray.  
+            // If the form was minimized, set it to the System Tray.  
             if (this.WindowState == FormWindowState.Minimized)
             {
                 Hide();
@@ -791,7 +808,7 @@ namespace ReminderToast
                 MessageBox.Show("Exception: No audio file has been selected.", "Exception caught");
             }
         }
-    } //End of Toast class
+    } // End of Toast class
 
     [SettingsSerializeAs(SettingsSerializeAs.Xml)]
     public class AlarmCollection : Alarms
