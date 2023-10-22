@@ -57,5 +57,53 @@ namespace ReminderToast.Properties {
                 this["WorldTime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool customAudio {
+            get {
+                return ((bool)(this["customAudio"]));
+            }
+            set {
+                this["customAudio"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AudioFilePath {
+            get {
+                return ((string)(this["AudioFilePath"]));
+            }
+            set {
+                this["AudioFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool showBalloonMinimize {
+            get {
+                return ((bool)(this["showBalloonMinimize"]));
+            }
+            set {
+                this["showBalloonMinimize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool autoRun {
+            get {
+                return ((bool)(this["autoRun"]));
+            }
+            set {
+                this["autoRun"] = value;
+            }
+        }
     }
 }

@@ -80,11 +80,32 @@
             this.playButton = new System.Windows.Forms.Button();
             this.volumeValueLabel = new System.Windows.Forms.Label();
             this.stopButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.circularProgressBar1 = new CircularProgressBar.CircularProgressBar();
+            this.startTimerButton = new System.Windows.Forms.Button();
+            this.editTimerButton = new System.Windows.Forms.Button();
+            this.resetTimerButton = new System.Windows.Forms.Button();
+            this.timersTimer = new System.Windows.Forms.Timer(this.components);
+            this.label7 = new System.Windows.Forms.Label();
+            this.timerGroupBox = new System.Windows.Forms.GroupBox();
+            this.discardTimerButton = new System.Windows.Forms.Button();
+            this.confirmTimerButton = new System.Windows.Forms.Button();
+            this.timerInfoLabel = new System.Windows.Forms.Label();
+            this.timerNameBox = new System.Windows.Forms.TextBox();
+            this.timerNumericS = new System.Windows.Forms.NumericUpDown();
+            this.timerNumericM = new System.Windows.Forms.NumericUpDown();
+            this.timerNumericH = new System.Windows.Forms.NumericUpDown();
+            this.stopTimerButton = new System.Windows.Forms.Button();
+            this.recurTimer = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).BeginInit();
             this.notifyContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.timerGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timerNumericS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerNumericM)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerNumericH)).BeginInit();
             this.SuspendLayout();
             // 
             // toastBox
@@ -574,13 +595,221 @@
             this.stopButton.UseVisualStyleBackColor = true;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
+            // label6
+            // 
+            this.label6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label6.Location = new System.Drawing.Point(12, 496);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(648, 2);
+            this.label6.TabIndex = 42;
+            // 
+            // circularProgressBar1
+            // 
+            this.circularProgressBar1.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
+            this.circularProgressBar1.AnimationSpeed = 500;
+            this.circularProgressBar1.BackColor = System.Drawing.Color.Transparent;
+            this.circularProgressBar1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.circularProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.circularProgressBar1.InnerColor = System.Drawing.SystemColors.Control;
+            this.circularProgressBar1.InnerMargin = 2;
+            this.circularProgressBar1.InnerWidth = -1;
+            this.circularProgressBar1.Location = new System.Drawing.Point(223, 515);
+            this.circularProgressBar1.MarqueeAnimationSpeed = 2000;
+            this.circularProgressBar1.Maximum = 250;
+            this.circularProgressBar1.Name = "circularProgressBar1";
+            this.circularProgressBar1.OuterColor = System.Drawing.Color.Gray;
+            this.circularProgressBar1.OuterMargin = -25;
+            this.circularProgressBar1.OuterWidth = 25;
+            this.circularProgressBar1.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.circularProgressBar1.ProgressWidth = 12;
+            this.circularProgressBar1.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.circularProgressBar1.Size = new System.Drawing.Size(261, 216);
+            this.circularProgressBar1.StartAngle = 270;
+            this.circularProgressBar1.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.circularProgressBar1.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.circularProgressBar1.SubscriptText = "";
+            this.circularProgressBar1.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.circularProgressBar1.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.circularProgressBar1.SuperscriptText = "";
+            this.circularProgressBar1.TabIndex = 43;
+            this.circularProgressBar1.Text = "HH:MM:SS";
+            this.circularProgressBar1.TextMargin = new System.Windows.Forms.Padding(2, 8, 0, 0);
+            // 
+            // startTimerButton
+            // 
+            this.startTimerButton.BackColor = System.Drawing.Color.Transparent;
+            this.startTimerButton.BackgroundImage = global::ReminderToast.Properties.Resources.play;
+            this.startTimerButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.startTimerButton.FlatAppearance.BorderSize = 0;
+            this.startTimerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.startTimerButton.Location = new System.Drawing.Point(295, 658);
+            this.startTimerButton.Name = "startTimerButton";
+            this.startTimerButton.Size = new System.Drawing.Size(50, 40);
+            this.startTimerButton.TabIndex = 44;
+            this.startTimerButton.UseVisualStyleBackColor = false;
+            this.startTimerButton.Click += new System.EventHandler(this.startTimerButton_Click);
+            // 
+            // editTimerButton
+            // 
+            this.editTimerButton.BackColor = System.Drawing.Color.Transparent;
+            this.editTimerButton.BackgroundImage = global::ReminderToast.Properties.Resources.circle_edit_pen_pencil_glyph_512;
+            this.editTimerButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.editTimerButton.FlatAppearance.BorderSize = 0;
+            this.editTimerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.editTimerButton.Location = new System.Drawing.Point(334, 557);
+            this.editTimerButton.Name = "editTimerButton";
+            this.editTimerButton.Size = new System.Drawing.Size(50, 40);
+            this.editTimerButton.TabIndex = 45;
+            this.editTimerButton.UseVisualStyleBackColor = false;
+            this.editTimerButton.Click += new System.EventHandler(this.editTimerButton_Click);
+            // 
+            // resetTimerButton
+            // 
+            this.resetTimerButton.BackColor = System.Drawing.Color.Transparent;
+            this.resetTimerButton.BackgroundImage = global::ReminderToast.Properties.Resources.reset;
+            this.resetTimerButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.resetTimerButton.FlatAppearance.BorderSize = 0;
+            this.resetTimerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.resetTimerButton.Location = new System.Drawing.Point(375, 658);
+            this.resetTimerButton.Name = "resetTimerButton";
+            this.resetTimerButton.Size = new System.Drawing.Size(50, 40);
+            this.resetTimerButton.TabIndex = 46;
+            this.resetTimerButton.UseVisualStyleBackColor = false;
+            this.resetTimerButton.Click += new System.EventHandler(this.resetTimerButton_Click);
+            // 
+            // timersTimer
+            // 
+            this.timersTimer.Interval = 1000;
+            this.timersTimer.Tick += new System.EventHandler(this.timersTimer_Tick);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(339, 498);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(33, 13);
+            this.label7.TabIndex = 47;
+            this.label7.Text = "Timer";
+            // 
+            // timerGroupBox
+            // 
+            this.timerGroupBox.BackColor = System.Drawing.Color.Transparent;
+            this.timerGroupBox.Controls.Add(this.recurTimer);
+            this.timerGroupBox.Controls.Add(this.discardTimerButton);
+            this.timerGroupBox.Controls.Add(this.confirmTimerButton);
+            this.timerGroupBox.Controls.Add(this.timerInfoLabel);
+            this.timerGroupBox.Controls.Add(this.timerNameBox);
+            this.timerGroupBox.Controls.Add(this.timerNumericS);
+            this.timerGroupBox.Controls.Add(this.timerNumericM);
+            this.timerGroupBox.Controls.Add(this.timerNumericH);
+            this.timerGroupBox.Enabled = false;
+            this.timerGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.timerGroupBox.Location = new System.Drawing.Point(223, 515);
+            this.timerGroupBox.Name = "timerGroupBox";
+            this.timerGroupBox.Size = new System.Drawing.Size(287, 216);
+            this.timerGroupBox.TabIndex = 48;
+            this.timerGroupBox.TabStop = false;
+            this.timerGroupBox.Text = "Edit Timer";
+            this.timerGroupBox.Visible = false;
+            // 
+            // discardTimerButton
+            // 
+            this.discardTimerButton.Location = new System.Drawing.Point(159, 143);
+            this.discardTimerButton.Name = "discardTimerButton";
+            this.discardTimerButton.Size = new System.Drawing.Size(74, 31);
+            this.discardTimerButton.TabIndex = 51;
+            this.discardTimerButton.Text = "Discard";
+            this.discardTimerButton.UseVisualStyleBackColor = true;
+            this.discardTimerButton.Click += new System.EventHandler(this.discardTimerButton_Click);
+            // 
+            // confirmTimerButton
+            // 
+            this.confirmTimerButton.Location = new System.Drawing.Point(57, 143);
+            this.confirmTimerButton.Name = "confirmTimerButton";
+            this.confirmTimerButton.Size = new System.Drawing.Size(74, 31);
+            this.confirmTimerButton.TabIndex = 50;
+            this.confirmTimerButton.Text = "Confirm";
+            this.confirmTimerButton.UseVisualStyleBackColor = true;
+            this.confirmTimerButton.Click += new System.EventHandler(this.confirmTimerButton_Click);
+            // 
+            // timerInfoLabel
+            // 
+            this.timerInfoLabel.AutoSize = true;
+            this.timerInfoLabel.Location = new System.Drawing.Point(116, 16);
+            this.timerInfoLabel.Name = "timerInfoLabel";
+            this.timerInfoLabel.Size = new System.Drawing.Size(61, 13);
+            this.timerInfoLabel.TabIndex = 49;
+            this.timerInfoLabel.Text = "HH:MM:SS";
+            // 
+            // timerNameBox
+            // 
+            this.timerNameBox.Location = new System.Drawing.Point(38, 88);
+            this.timerNameBox.Name = "timerNameBox";
+            this.timerNameBox.Size = new System.Drawing.Size(223, 20);
+            this.timerNameBox.TabIndex = 3;
+            this.timerNameBox.Text = "Enter name";
+            // 
+            // timerNumericS
+            // 
+            this.timerNumericS.Location = new System.Drawing.Point(171, 35);
+            this.timerNumericS.Name = "timerNumericS";
+            this.timerNumericS.Size = new System.Drawing.Size(37, 20);
+            this.timerNumericS.TabIndex = 2;
+            // 
+            // timerNumericM
+            // 
+            this.timerNumericM.Location = new System.Drawing.Point(128, 35);
+            this.timerNumericM.Name = "timerNumericM";
+            this.timerNumericM.Size = new System.Drawing.Size(37, 20);
+            this.timerNumericM.TabIndex = 1;
+            // 
+            // timerNumericH
+            // 
+            this.timerNumericH.Location = new System.Drawing.Point(85, 35);
+            this.timerNumericH.Name = "timerNumericH";
+            this.timerNumericH.Size = new System.Drawing.Size(37, 20);
+            this.timerNumericH.TabIndex = 0;
+            // 
+            // stopTimerButton
+            // 
+            this.stopTimerButton.BackColor = System.Drawing.Color.Transparent;
+            this.stopTimerButton.BackgroundImage = global::ReminderToast.Properties.Resources.pause;
+            this.stopTimerButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.stopTimerButton.Enabled = false;
+            this.stopTimerButton.FlatAppearance.BorderSize = 0;
+            this.stopTimerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.stopTimerButton.Location = new System.Drawing.Point(295, 658);
+            this.stopTimerButton.Name = "stopTimerButton";
+            this.stopTimerButton.Size = new System.Drawing.Size(50, 40);
+            this.stopTimerButton.TabIndex = 49;
+            this.stopTimerButton.UseVisualStyleBackColor = false;
+            this.stopTimerButton.Click += new System.EventHandler(this.stopTimerButton_Click);
+            // 
+            // recurTimer
+            // 
+            this.recurTimer.AutoSize = true;
+            this.recurTimer.Location = new System.Drawing.Point(57, 115);
+            this.recurTimer.Name = "recurTimer";
+            this.recurTimer.Size = new System.Drawing.Size(55, 17);
+            this.recurTimer.TabIndex = 52;
+            this.recurTimer.Text = "Recur";
+            this.recurTimer.UseVisualStyleBackColor = true;
+            // 
             // Toast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(668, 492);
+            this.ClientSize = new System.Drawing.Size(668, 743);
+            this.Controls.Add(this.timerGroupBox);
+            this.Controls.Add(this.startTimerButton);
+            this.Controls.Add(this.stopTimerButton);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.resetTimerButton);
+            this.Controls.Add(this.editTimerButton);
+            this.Controls.Add(this.circularProgressBar1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.volumeValueLabel);
             this.Controls.Add(this.playButton);
@@ -634,6 +863,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.repeatTimesBox)).EndInit();
             this.notifyContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.timerGroupBox.ResumeLayout(false);
+            this.timerGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timerNumericS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerNumericM)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerNumericH)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -691,6 +925,23 @@
         private System.Windows.Forms.Button playButton;
         private System.Windows.Forms.Label volumeValueLabel;
         private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Label label6;
+        private CircularProgressBar.CircularProgressBar circularProgressBar1;
+        private System.Windows.Forms.Button startTimerButton;
+        private System.Windows.Forms.Button editTimerButton;
+        private System.Windows.Forms.Button resetTimerButton;
+        private System.Windows.Forms.Timer timersTimer;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox timerGroupBox;
+        private System.Windows.Forms.Label timerInfoLabel;
+        private System.Windows.Forms.TextBox timerNameBox;
+        private System.Windows.Forms.NumericUpDown timerNumericS;
+        private System.Windows.Forms.NumericUpDown timerNumericM;
+        private System.Windows.Forms.NumericUpDown timerNumericH;
+        private System.Windows.Forms.Button stopTimerButton;
+        private System.Windows.Forms.Button discardTimerButton;
+        private System.Windows.Forms.Button confirmTimerButton;
+        private System.Windows.Forms.CheckBox recurTimer;
     }
 }
 

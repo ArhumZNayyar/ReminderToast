@@ -11,5 +11,17 @@
     <Setting Name="WorldTime" Type="System.Windows.Forms.CheckState" Scope="User">
       <Value Profile="(Default)">Unchecked</Value>
     </Setting>
+    <Setting Name="customAudio" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AudioFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="showBalloonMinimize" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="autoRun" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

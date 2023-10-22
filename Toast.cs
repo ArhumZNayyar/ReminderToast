@@ -25,12 +25,14 @@ namespace ReminderToast
         DateTimePicker newClock = new DateTimePicker();
         DateTime reminderTime;
         MediaPlayer WinMediaPlayer = new MediaPlayer();
+        private System.Diagnostics.Stopwatch elapsedStopwatch = new System.Diagnostics.Stopwatch();
         string format = "MM/dd/yyyy hh:mm:ss tt"; // USA
         string dateFormat = "MM/dd/yyyy"; // USA
         string audioFileName = "";
         string modifyName = "";
         int modifyIndex = 0;
         int wmpVolume = 10;
+        private int remindTimer = 0;
 
         public Toast()
         {
@@ -71,7 +73,7 @@ namespace ReminderToast
             * Otherwise there will be an error due to attempting to set the object to a null object
             */
            if (File.Exists(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile))
-            {
+           {
                 if (Properties.Settings.Default.TaskList != null)
                 {
                     // Set Time Format
@@ -100,9 +102,11 @@ namespace ReminderToast
                     toastBox.Update();
                     toastBox.Refresh();
                 }
-            }
+           }
             // Set selected date to today's date
             selectedDateBox.Text = monthCalendar.SelectionRange.Start.Date.ToString(dateFormat);
+            // Set circular progress bar to 0
+            circularProgressBar1.Value = 0;
         }
 
         private void addToastButton_Click(object sender, EventArgs e)
@@ -431,7 +435,7 @@ namespace ReminderToast
                 alarmList.tasks.RemoveAt(index);
                 toastBox.Items.Remove(toastBox.SelectedItem);
                 // Save after removing so it does not persist after restarting the application
-                Properties.Settings.Default.TaskList = alarmList;
+                //Properties.Settings.Default.TaskList = alarmList;
                 Properties.Settings.Default.Save();
             }
             catch (Exception except)
@@ -809,6 +813,160 @@ namespace ReminderToast
             {
                 MessageBox.Show("Exception: No audio file has been selected.", "Exception caught");
             }
+        }
+
+        private void startTimerButton_Click(object sender, EventArgs e)
+        {
+            int totalTimerMS = (int)((timerNumericH.Value * 3600000) + (timerNumericM.Value * 60000) +
+                                     (timerNumericS.Value * 1000));
+
+
+
+             
+            remindTimer = totalTimerMS;
+            timersTimer.Enabled = true;
+            circularProgressBar1.Enabled = true;
+            circularProgressBar1.Maximum = remindTimer;
+
+            timersTimer.Start();
+            if (elapsedStopwatch.ElapsedMilliseconds == 0 || elapsedStopwatch.ElapsedMilliseconds == remindTimer)
+            {
+                elapsedStopwatch.Reset();
+                circularProgressBar1.Value = 0;
+            }
+            
+            elapsedStopwatch.Start();
+
+            startTimerButton.Visible = false;
+            startTimerButton.Enabled = false;
+            stopTimerButton.Enabled = true;
+        }
+
+        private void resetTimerButton_Click(object sender, EventArgs e)
+        {
+            int totalTimerMS = (int)((timerNumericH.Value * 3600000) + (timerNumericM.Value * 60000) +
+                                     (timerNumericS.Value * 1000));
+
+            remindTimer = totalTimerMS;
+            circularProgressBar1.Maximum = remindTimer;
+            circularProgressBar1.Value = 0;
+            timersTimer.Stop();
+            elapsedStopwatch.Reset();
+            elapsedStopwatch.Stop();
+
+            timersTimer.Start();
+            elapsedStopwatch.Start();
+        }
+
+        private void editTimerButton_Click(object sender, EventArgs e)
+        {
+            timerGroupBox.Enabled = true;
+            timerGroupBox.Visible = true;
+        }
+
+        private void stopTimerButton_Click(object sender, EventArgs e)
+        {
+            timersTimer.Stop();
+            elapsedStopwatch.Stop();
+            startTimerButton.Visible = true;
+            startTimerButton.Enabled = true;
+            stopTimerButton.Enabled = false;
+        }
+
+        private void timersTimer_Tick(object sender, EventArgs e)
+        {
+            int remainingTimeMS = (int)elapsedStopwatch.ElapsedMilliseconds;
+            int elapsedTimeMS = remindTimer - remainingTimeMS;
+
+            if ((circularProgressBar1.Value + 1000) <= remindTimer)
+            {
+                circularProgressBar1.Value += 1000;
+            }
+
+            TimeSpan remainingTimeSpan = TimeSpan.FromMilliseconds(elapsedTimeMS);
+            circularProgressBar1.Text = remainingTimeSpan.ToString(@"hh\:mm\:ss");
+            circularProgressBar1.Refresh();
+
+            if (remainingTimeMS >= remindTimer && recurTimer.Checked)
+            {
+
+                var location = new Uri(Directory.GetCurrentDirectory() + "/logo.png");
+                var toast = new ToastContentBuilder().AddText(timerNameBox.Text)
+                    .AddText("Yuhhhh")
+                    .SetToastScenario(ToastScenario.Reminder)
+                    .AddToastInput(new ToastSelectionBox("snoozeTime")
+                    {
+                        DefaultSelectionBoxItemId = "1",
+                        Items =
+                        {
+                            new ToastSelectionBoxItem("1", "1 minute"),
+                            new ToastSelectionBoxItem("2", "2 minutes"),
+                            new ToastSelectionBoxItem("5", "5 minutes"),
+                            new ToastSelectionBoxItem("10", "10 minutes"),
+                            new ToastSelectionBoxItem("30", "30 minutes")
+                        }
+                    })
+                    .AddButton(new ToastButtonSnooze() { SelectionBoxId = "snoozeTime" })
+                    .AddButton(new ToastButtonDismiss())
+                    .AddAppLogoOverride(location, ToastGenericAppLogoCrop.Circle);
+
+                toast.Show();
+
+                timersTimer.Start();
+                elapsedStopwatch.Restart();
+                circularProgressBar1.Value = 0;
+            }
+
+            else if (remainingTimeMS >= remindTimer && !recurTimer.Checked)
+            {
+                timersTimer.Stop();
+                elapsedStopwatch.Reset();
+                elapsedStopwatch.Stop();
+
+                var location = new Uri(Directory.GetCurrentDirectory() + "/logo.png");
+                var toast = new ToastContentBuilder().AddText(timerNameBox.Text)
+                    .AddText("Yuhhhh")
+                    .SetToastScenario(ToastScenario.Reminder)
+                    .AddToastInput(new ToastSelectionBox("snoozeTime")
+                    {
+                        DefaultSelectionBoxItemId = "1",
+                        Items =
+                        {
+                            new ToastSelectionBoxItem("1", "1 minute"),
+                            new ToastSelectionBoxItem("2", "2 minutes"),
+                            new ToastSelectionBoxItem("5", "5 minutes"),
+                            new ToastSelectionBoxItem("10", "10 minutes"),
+                            new ToastSelectionBoxItem("30", "30 minutes")
+                        }
+                    })
+                    .AddButton(new ToastButtonSnooze() { SelectionBoxId = "snoozeTime" })
+                    .AddButton(new ToastButtonDismiss())
+                    .AddAppLogoOverride(location, ToastGenericAppLogoCrop.Circle);
+
+                toast.Show();
+                circularProgressBar1.Value = remindTimer;
+                circularProgressBar1.Text = "00:00:00";
+                startTimerButton.Visible = true;
+                startTimerButton.Enabled = true;
+                stopTimerButton.Enabled = false;
+            }
+        }
+
+        private void confirmTimerButton_Click(object sender, EventArgs e)
+        {
+            timerGroupBox.Enabled = false;
+            timerGroupBox.Visible = false;
+
+            int totalTimerMS = (int)((timerNumericH.Value * 3600000) + (timerNumericM.Value * 60000) +
+                                     (timerNumericS.Value * 1000));
+            TimeSpan remainingTimeSpan = TimeSpan.FromMilliseconds(totalTimerMS);
+            circularProgressBar1.Text = remainingTimeSpan.ToString(@"hh\:mm\:ss");
+        }
+
+        private void discardTimerButton_Click(object sender, EventArgs e)
+        {
+            timerGroupBox.Enabled = false;
+            timerGroupBox.Visible = false;
         }
     } // End of Toast class
 
